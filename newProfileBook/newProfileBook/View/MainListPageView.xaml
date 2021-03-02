@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="newProfileBook.View.MainListPageView"
+             Title="{Binding Title}">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Order="Primary"
+            Priority="1"
+            Command="{Binding LogOutTappedCommand}"
+            IconImageSource="ic_exit_to_app.png"/>
+        <ToolbarItem
+            Order="Primary"
+            Priority="1"
+            Command="{Binding SettingsCommand}"
+            IconImageSource="ic_settings.png"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ListView 
+                HasUnevenRows="True"
+                SelectedItem="{Binding SelectedItem}"
+                ItemsSource="{Binding ProfileList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Edit"
+                    Command="{Binding Path=ListViewModel.SettingsCommand}" CommandParameter="{Binding}" />
+                                <MenuItem Text="Delete"
+                    Command="{Binding Path=ListViewModel.RemoveCommand}" CommandParameter="{Binding}" />
+                            </ViewCell.ContextActions>
+                            
+                            <ViewCell.View>
+                                <StackLayout 
+                                Orientation="Horizontal" 
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand">
+                                    <Image Source="{Binding ImagePath}" 
+                                           HeightRequest="100" 
+                                           WidthRequest="100" 
+                                           Margin="30" BackgroundColor="AliceBlue">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding }" 
+                                                          CommandParameter="{Binding .}"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label 
+                                        Text="{Binding Nickname}"
+                                        FontAttributes="Bold"/>
+                                        <Label 
+                                        Text="{Binding Name}"/>
+                                        <Label 
+                                        Text="{Binding CreationTime}"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <Button
+            x:Name="addNewProfile"
+            Grid.Row="0"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="0,0,30,50" 
+            HeightRequest="70"
+            WidthRequest="70"
+            BackgroundColor="Blue"
+            BorderWidth="5"
+            BorderColor="Gray"
+            Text="+"
+            FontSize="35"
+            CornerRadius="35"
+            Command="{Binding OnTapAddUser}"/>
+
+        </Grid>
+        
+        
+    </ContentPage.Content>
+
+</ContentPage>

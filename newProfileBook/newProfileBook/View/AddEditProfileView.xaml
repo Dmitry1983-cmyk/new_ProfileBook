@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="newProfileBook.View.AddEditProfileView"
+             Title="{Binding Title}">
+    
+        
+        <ContentPage.ToolbarItems>
+            <ToolbarItem
+            Order="Primary"
+            Priority="1"
+            Command="{Binding AddProfile}"
+            IconImageSource="ic_save.png"/>
+        </ContentPage.ToolbarItems>
+        
+        <StackLayout >
+            
+            <Image
+            HeightRequest="170" 
+            Margin="0,10"
+            Source="{Binding ImagePath}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ImageCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            
+            <Entry x:Name="txtNickname"
+                   Placeholder="Nickname"
+                   VerticalOptions="Center"
+                   FontAttributes="Bold"
+                   Margin="50,50,50,0"
+                   Text="{Binding Nickname}"/>
+            <Entry x:Name="txtName"
+                   Placeholder="Name"
+                   Margin="50,10,50,0"
+                   Text="{Binding Name}"/>
+            <Entry x:Name="txtDiscription"
+                   Placeholder="Description"
+                   VerticalOptions="Center"
+                   Margin="50,10,50,0"
+                   HeightRequest="150"
+                   VerticalTextAlignment="Start"
+                   BackgroundColor="LightGray"
+                   Text="{Binding Description}"/>
+
+
+        </StackLayout>
+    
+</ContentPage>

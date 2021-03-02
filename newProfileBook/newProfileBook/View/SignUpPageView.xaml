@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="newProfileBook.View.RegisterPageView"
+             Title="{Binding Title}"
+             >
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry
+                x:Name="txtLogin"
+                Placeholder="Login"
+                Margin="80,200,80,0"
+                Text="{Binding Login}"
+                />
+            <Entry 
+                x:Name="txtPassword"
+                Placeholder="Password"
+                IsPassword="True"
+                Margin="80,0,80,0"
+                Text="{Binding Password}"
+                />
+            <Entry 
+                x:Name="txtConfirm"
+                Placeholder="Confirm"
+                IsPassword="True"
+                Margin="80,0,80,0"
+                Text="{Binding Confirm}"
+                />
+            <Button
+                x:Name="btnRegister"
+                Text="register"
+                Margin="80,80,80,80"
+                BackgroundColor="Orange"
+                Command="{Binding OnTapRegisterUser}"
+                />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
