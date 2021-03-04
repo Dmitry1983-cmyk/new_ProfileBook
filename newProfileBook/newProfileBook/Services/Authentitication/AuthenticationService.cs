@@ -20,10 +20,12 @@ namespace newProfileBook.Services.Authentitication
             var database = new SQLiteAsyncConnection(path);
 
             var user = database.Table<ProfileModel>().Where(x => x.Login == login && x.Password == password).FirstOrDefaultAsync();
+
             if (user != null)
                 return user.Id;
             else
                 return 0;
+
         }
     }
 }

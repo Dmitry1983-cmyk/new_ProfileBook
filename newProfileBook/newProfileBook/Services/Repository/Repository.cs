@@ -14,7 +14,7 @@ namespace newProfileBook.Services.Repository
 
         public Repository()
         {
-            _database = new Lazy<SQLiteAsyncConnection>(()=>
+            _database = new Lazy<SQLiteAsyncConnection>(() =>
             {
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
                 var database = new SQLiteAsyncConnection(path);
@@ -49,5 +49,6 @@ namespace newProfileBook.Services.Repository
         {
             return await _database.Value.UpdateAsync(entity);
         }
+
     }
 }
