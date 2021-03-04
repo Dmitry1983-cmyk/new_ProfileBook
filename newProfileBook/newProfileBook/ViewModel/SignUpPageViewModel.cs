@@ -113,20 +113,17 @@ namespace newProfileBook
                                 Description = Login,
                                 ImagePath = "pic_profile.png"
                             };
-                            //_userDialogs.Alert("Login Success", "Ok");
-                            //await database.InsertAsync(user);
                             await _repository.InsertAsync(user);
                             await _navigateService.NavigateAsync($"{nameof(MainPage)}");
                         }
                         else
                         {
-                            //_userDialogs.Toast("Username or Password invalid", null);
+                             await App.Current.MainPage.DisplayAlert("Warning", "Incorrect Login or Password", "OK");
                         }
                     }
                 }
             }
 
-            //await _navigateService.NavigateAsync($"{nameof(MainPage)}");
         }
     }
 }

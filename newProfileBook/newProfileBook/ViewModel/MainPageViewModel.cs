@@ -61,18 +61,19 @@ namespace newProfileBook
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
             var database = new SQLiteAsyncConnection(path);
-            var data = database.Table<ProfileModel>();
-            var txt_log_pass = data.Where(x => x.Login == Login && x.Password == Password).FirstOrDefaultAsync();
 
-            if (txt_log_pass != null)
+            var user = database.Table<ProfileModel>().Where(x => x.Login == Login && x.Password == Password).FirstOrDefaultAsync();
+            if (user != null)
             {
+
                 await _navigateService.NavigateAsync($"{nameof(MainListPageView)}");//login/pass Vasya 
-                //_userDialogs.Alert("Login Success", "Ok");
+
             }
             else
             {
-                await _navigateService.NavigateAsync($"{nameof(RegisterPageView)}");
+                await App.Current.MainPage.DisplayAlert("Warning", "Incorrect Login or Password", "OK");
             }
+
         }
 
         #endregion
