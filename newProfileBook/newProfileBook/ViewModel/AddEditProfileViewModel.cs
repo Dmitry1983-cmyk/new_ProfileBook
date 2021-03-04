@@ -97,7 +97,12 @@ namespace newProfileBook.ViewModel
                 CreationTime = DateTime.Now
             };
 
-            await _repository.InsertAsync(profile);
+            //await _repository.InsertAsync(profile);
+            var id= await _repository.InsertAsync(profile);
+            profile.Id = id;
+
+            ProfileList.Add(profile);
+
             await _navigateService.NavigateAsync(nameof(MainListPageView));
         }
 

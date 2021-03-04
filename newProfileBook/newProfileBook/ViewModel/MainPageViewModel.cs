@@ -4,6 +4,10 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using newProfileBook.View;
 using Acr.UserDialogs;
+using newProfileBook.Services.Repository;
+using SQLite;
+using System.IO;
+using System;
 
 namespace newProfileBook
 {
@@ -11,11 +15,11 @@ namespace newProfileBook
     {
         private readonly INavigationService _navigateService;
         private IUserDialogs _userDialogs;
+        IRepository _repository;
 
         public string _title;
         public string _login;
         public string _password;
-
         public string Title
         {
             get { return _title; }
@@ -33,28 +37,42 @@ namespace newProfileBook
             get { return _password; }
             set { SetProperty(ref _password, value); }
         }
+
         #region--ctor
-        public MainPageViewModel(INavigationService navigationService)
+        public MainPageViewModel(INavigationService navigationService, IRepository repository)
         {
             Title = "Main Page";
             _navigateService = navigationService;
+            _repository = repository;
+
         }
 
         #endregion
 
         #region --method
         public ICommand OnTapSignUpPage => new Command(ExecuteNavigateCommand);
-
         async private void ExecuteNavigateCommand()
         {
             await _navigateService.NavigateAsync($"{nameof(RegisterPageView)}");
         }
 
         public ICommand OnTapLogin => new Command(ExecuteNavigateCommand_MainList);
-
         async private void ExecuteNavigateCommand_MainList()
         {
-            await _navigateService.NavigateAsync($"{nameof(MainListPageView)}");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
+            var database = new SQLiteAsyncConnection(path);
+            var data = database.Table<ProfileModel>();
+            var txt_log_pass = data.Where(x => x.Login == Login && x.Password == Password).FirstOrDefaultAsync();
+
+            if (txt_log_pass != null)
+            {
+                await _navigateService.NavigateAsync($"{nameof(MainListPageView)}");//login/pass Vasya 
+                //_userDialogs.Alert("Login Success", "Ok");
+            }
+            else
+            {
+                await _navigateService.NavigateAsync($"{nameof(RegisterPageView)}");
+            }
         }
 
         #endregion

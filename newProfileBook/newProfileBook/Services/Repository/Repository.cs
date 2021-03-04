@@ -16,7 +16,7 @@ namespace newProfileBook.Services.Repository
         {
             _database = new Lazy<SQLiteAsyncConnection>(()=>
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook.db3");
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
                 var database = new SQLiteAsyncConnection(path);
 
                 database.CreateTableAsync<ProfileModel>();
@@ -30,7 +30,7 @@ namespace newProfileBook.Services.Repository
             return await _database.Value.DeleteAllAsync<T>();
         }
 
-        public async Task<int> DleteAsync<T>(T entity) where T : IEntityBase, new()
+        public async Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
         {
             return await _database.Value.DeleteAsync<T>(entity);
         }

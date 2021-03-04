@@ -14,11 +14,6 @@ namespace newProfileBook
 {
     class MainListPageViewModel : BindableBase, IInitializeAsync
     {
-       
-        
-
-
-
         private readonly INavigationService _navigateService;
         private IRepository _repository;
 
@@ -28,6 +23,7 @@ namespace newProfileBook
         public string _imgPath;
         private ObservableCollection<ProfileModel> _profileList;
 
+        #region---property
         public string Title
         {
             get { return _title; }
@@ -60,6 +56,7 @@ namespace newProfileBook
             set => SetProperty(ref _profileList, value);
         }
 
+        #endregion
 
         #region --ctor
         public MainListPageViewModel(INavigationService navigationService, IRepository repository)
@@ -101,7 +98,7 @@ namespace newProfileBook
         public ICommand RemoveCommand => new Command(OnRemoveTappedCommandAsync);
         private async void OnRemoveTappedCommandAsync()
         {
-            await _repository.DleteAsync(SelectedItem);
+            await _repository.DeleteAsync(SelectedItem);
         }
 
         #endregion
@@ -130,6 +127,7 @@ namespace newProfileBook
         {
             base.OnPropertyChanged(args);
         }
+
 
 
         #endregion

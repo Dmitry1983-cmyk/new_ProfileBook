@@ -40,6 +40,8 @@ namespace newProfileBook
             containerRegistry.RegisterForNavigation<AddEditProfileView, AddEditProfileViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
 
+
+
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());//надо сделать прослойку, обратится к ней, а потом прослойка идет к Репозиторию
         }
     }
