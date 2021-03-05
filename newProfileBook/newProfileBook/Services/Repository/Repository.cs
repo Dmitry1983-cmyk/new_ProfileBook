@@ -32,7 +32,7 @@ namespace newProfileBook.Services.Repository
 
         public async Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return await _database.Value.DeleteAsync<T>(entity);
+            return await _database.Value.DeleteAsync<T>(entity.Id);
         }
 
         public async Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new()

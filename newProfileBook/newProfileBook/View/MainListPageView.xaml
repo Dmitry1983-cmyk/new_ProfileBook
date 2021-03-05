@@ -26,20 +26,28 @@
             </Grid.RowDefinitions>
 
             <ListView 
+                x:Name="MyListView"
                 HasUnevenRows="True"
                 SelectedItem="{Binding SelectedItem}"
                 ItemsSource="{Binding ProfileList}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            
+
                             <ViewCell.ContextActions>
-                                <MenuItem Text="Edit"
-                    Command="{Binding Path=ListViewModel.SettingsCommand}" CommandParameter="{Binding}" />
-                                <MenuItem Text="Delete"
-                    Command="{Binding Path=ListViewModel.RemoveCommand}" CommandParameter="{Binding}" />
+
+                                <MenuItem Text="Edit" 
+                                          Command="{Binding  Path=BindingContext.OnTapAddUser ,Source={x:Reference Name=MyListView} }" 
+                                CommandParameter="{Binding .}"
+                                          IsDestructive="True"/>
+
+                                <MenuItem Text="Delete" 
+                                Command="{Binding  Path=BindingContext.RemoveCommand ,Source={x:Reference Name=MyListView}}" 
+                                          CommandParameter="{Binding .}" 
+                                          IsDestructive="True"/>
+
                             </ViewCell.ContextActions>
-                            
+
                             <ViewCell.View>
                                 <StackLayout 
                                 Orientation="Horizontal" 

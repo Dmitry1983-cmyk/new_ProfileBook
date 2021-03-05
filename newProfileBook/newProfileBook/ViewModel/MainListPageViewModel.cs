@@ -66,7 +66,7 @@ namespace newProfileBook
             _repository = repository;
 
             ImagePath = "pic_profile.png";
-            
+
         }
 
 
@@ -94,11 +94,15 @@ namespace newProfileBook
             await _navigateService.NavigateAsync(nameof(SettingsPage));
         }
 
-
-        public ICommand RemoveCommand => new Command(OnRemoveTappedCommandAsync);
-        private async void OnRemoveTappedCommandAsync()
+        public ICommand RemoveCommand => new Command<ProfileModel>(OnRemoveTappedCommandAsync);
+        private async void OnRemoveTappedCommandAsync(ProfileModel profile)
         {
-            await _repository.DeleteAsync(SelectedItem);
+            var query = await App.Current.MainPage.DisplayAlert("Delete Profile", "Are you want to delete " + profile.Nickname + " ?", "Ok", "Cancel");
+            if (query)
+            {
+                await _repository.DeleteAsync(profile);
+                ProfileList.Remove(profile);
+            }
         }
 
         #endregion
@@ -126,8 +130,11 @@ namespace newProfileBook
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
+            //if(args.PropertyName==nameof(SelectedItem))
+            //{
+            //    Title = SelectedItem.Nickname;
+            //}
         }
-
 
 
         #endregion

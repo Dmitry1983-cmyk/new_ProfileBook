@@ -17,5 +17,6 @@ namespace newProfileBook.View
         {
             InitializeComponent();
         }
+
     }
 }
