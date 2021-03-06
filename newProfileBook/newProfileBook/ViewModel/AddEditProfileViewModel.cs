@@ -11,12 +11,16 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Plugin.Media.Abstractions;
+using System.IO;
+using SQLite;
+using System.Linq;
 
 namespace newProfileBook.ViewModel
 {
-    public class AddEditProfileViewModel : BindableBase
+    public class AddEditProfileViewModel : BindableBase,INavigationAware
     {
         public string _title;
+        public int _id;
         public string _nickname;
         public string _name;
         public string _cdescription;
@@ -27,6 +31,12 @@ namespace newProfileBook.ViewModel
         private IMedia _media;
         private IRepository _repository;
         private ObservableCollection<ProfileModel> _profileList;
+
+        public int Id
+        {
+            get { return _id; }
+            set { SetProperty(ref _id, value); }
+        }
 
         public string Title
         {
@@ -75,7 +85,6 @@ namespace newProfileBook.ViewModel
         #region--ctor
         public AddEditProfileViewModel(INavigationService navigationService, IRepository repository)
         {
-            Title = "Add Profile Page";
             ImagePath = "pic_profile.png";
             _navigateService = navigationService;
             _repository = repository;
@@ -88,24 +97,40 @@ namespace newProfileBook.ViewModel
         public ICommand AddProfile => new Command(ExecuteNavigateCommand);
         private async void ExecuteNavigateCommand()
         {
-            var profile = new ProfileModel()
+
+            if (Title== "Edit profile")
             {
-                Nickname = Nickname,
-                Name = Name,
-                ImagePath= "pic_profile.png",
-                Description = Description,
-                CreationTime = DateTime.Now
-            };
+                var profile = new ProfileModel()
+                {
+                    Id=Id,
+                    Nickname = Nickname,
+                    Name = Name,
+                    ImagePath = "pic_profile.png",
+                    Description = Description,
+                    CreationTime = DateTime.Now
+                };
 
-            //await _repository.InsertAsync(profile);
-            var id= await _repository.InsertAsync(profile);
-            profile.Id = id;
+                await _repository.UpdateAsync(profile);
 
-            ProfileList.Add(profile);
+                await _navigateService.NavigateAsync(nameof(MainListPageView));
+            }
+            else
+            {
+                Title = "Add profile";
+                var profile = new ProfileModel()
+                {
+                    Nickname = Nickname,
+                    Name = Name,
+                    ImagePath = "pic_profile.png",
+                    Description = Description,
+                    CreationTime = DateTime.Now
+                };
 
-            await _navigateService.NavigateAsync(nameof(MainListPageView));
+                await _repository.InsertAsync(profile);
+
+                await _navigateService.NavigateAsync(nameof(MainListPageView));
+            }
         }
-
 
 
         public ICommand ImageCommand => new Command(OnImageCommand);
@@ -147,8 +172,28 @@ namespace newProfileBook.ViewModel
             }
         }
 
-        
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            var profile = parameters.GetValue<ProfileModel>("profile");
+            if (profile != null)
+            {
+                Id = profile.Id;
+                Title = "Edit profile";
+                Nickname = profile.Nickname;
+                Name = profile.Name;
+                Description = profile.Description;
+                imagePath = profile.ImagePath;
+            }
+            else
+            {
+                Title = "Add profile";
+            }
+        }
 
         #endregion
 

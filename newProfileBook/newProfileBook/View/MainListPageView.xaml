@@ -37,7 +37,7 @@
                             <ViewCell.ContextActions>
 
                                 <MenuItem Text="Edit" 
-                                          Command="{Binding  Path=BindingContext.OnTapAddUser ,Source={x:Reference Name=MyListView} }" 
+                                          Command="{Binding  Path=BindingContext.EditCommand ,Source={x:Reference Name=MyListView} }" 
                                 CommandParameter="{Binding .}"
                                           IsDestructive="True"/>
 

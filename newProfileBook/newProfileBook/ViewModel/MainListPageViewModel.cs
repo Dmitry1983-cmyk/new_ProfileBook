@@ -74,6 +74,15 @@ namespace newProfileBook
 
 
         #region--methods
+
+        public ICommand EditCommand => new Command<ProfileModel>(OnAddEditTappedCommandAsync);
+        private async void OnAddEditTappedCommandAsync(ProfileModel profile)
+        {
+            var param = new NavigationParameters();
+            param.Add("profile", profile);
+            await _navigateService.NavigateAsync(nameof(AddEditProfileView), param);
+        }
+
         public ICommand OnTapAddUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
