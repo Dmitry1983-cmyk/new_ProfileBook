@@ -100,19 +100,26 @@ namespace newProfileBook.ViewModel
 
             if (Title== "Edit profile")
             {
-                var profile = new ProfileModel()
+                if (Nickname.Length!=0 && Name.Length!=0)
                 {
-                    Id=Id,
-                    Nickname = Nickname,
-                    Name = Name,
-                    ImagePath = "pic_profile.png",
-                    Description = Description,
-                    CreationTime = DateTime.Now
-                };
+                    var profile = new ProfileModel()
+                    {
+                        Id = Id,
+                        Nickname = Nickname,
+                        Name = Name,
+                        ImagePath = "pic_profile.png",
+                        Description = Description,
+                        CreationTime = DateTime.Now
+                    };
 
-                await _repository.UpdateAsync(profile);
+                    await _repository.UpdateAsync(profile);
 
-                await _navigateService.NavigateAsync(nameof(MainListPageView));
+                    await _navigateService.NavigateAsync(nameof(MainListPageView));
+                }
+                else
+                {
+                    await Prism.PrismApplicationBase.Current.MainPage.DisplayAlert("WARNING","Поля не могут быть пустыми","Ok");
+                }
             }
             else
             {
@@ -125,10 +132,17 @@ namespace newProfileBook.ViewModel
                     Description = Description,
                     CreationTime = DateTime.Now
                 };
+                if (!string.IsNullOrEmpty(Nickname) && !string.IsNullOrEmpty(Name))
+                {
 
-                await _repository.InsertAsync(profile);
+                    await _repository.InsertAsync(profile);
 
-                await _navigateService.NavigateAsync(nameof(MainListPageView));
+                    await _navigateService.NavigateAsync(nameof(MainListPageView));
+                }
+                else
+                {
+                    await Prism.PrismApplicationBase.Current.MainPage.DisplayAlert("WARNING", "Поля не могут быть пустыми", "Ok");
+                }
             }
         }
 
