@@ -1,6 +1,11 @@
-﻿using newProfileBook.Services.Repository;
+﻿using Acr.UserDialogs;
+using newProfileBook.Services.Authentitication;
+using newProfileBook.Services.Authorization;
+using newProfileBook.Services.Repository;
 using newProfileBook.View;
 using newProfileBook.ViewModel;
+using Plugin.Media;
+using Plugin.Settings;
 using Prism;
 using Prism.Ioc;
 using Prism.Unity;
@@ -40,8 +45,13 @@ namespace newProfileBook
             containerRegistry.RegisterForNavigation<AddEditProfileView, AddEditProfileViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
 
+            containerRegistry.RegisterInstance(UserDialogs.Instance);
+            containerRegistry.RegisterInstance(CrossMedia.Current);
+            
 
-            containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());//надо сделать прослойку, обратится к ней, а потом прослойка идет к Репозиторию
+            containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
+            containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
+            //containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());// Prism.Ioc.ContainerResolutionException:
         }
     }
 }

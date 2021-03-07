@@ -65,8 +65,6 @@ namespace newProfileBook
             _navigateService = navigationService;
             _repository = repository;
 
-            ImagePath = "pic_profile.png";
-
         }
 
 

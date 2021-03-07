@@ -14,6 +14,9 @@ using Plugin.Media.Abstractions;
 using System.IO;
 using SQLite;
 using System.Linq;
+using Xamarin.Essentials;
+using Plugin.Media;
+using System.Threading.Tasks;
 
 namespace newProfileBook.ViewModel
 {
@@ -30,7 +33,7 @@ namespace newProfileBook.ViewModel
         private IUserDialogs _userDialogs;
         private IMedia _media;
         private IRepository _repository;
-        private ObservableCollection<ProfileModel> _profileList;
+
 
         public int Id
         {
@@ -75,19 +78,16 @@ namespace newProfileBook.ViewModel
             }
         }
 
-        public ObservableCollection<ProfileModel> ProfileList
-        {
-            get => _profileList;
-            set => SetProperty(ref _profileList, value);
-        }
-
-        
         #region--ctor
-        public AddEditProfileViewModel(INavigationService navigationService, IRepository repository)
+        public AddEditProfileViewModel(INavigationService navigationService, IRepository repository, IUserDialogs userDialogs, IMedia media)
         {
             ImagePath = "pic_profile.png";
             _navigateService = navigationService;
             _repository = repository;
+
+            _userDialogs = userDialogs;
+            _media = media; 
+
         }
         #endregion
 
@@ -107,7 +107,7 @@ namespace newProfileBook.ViewModel
                         Id = Id,
                         Nickname = Nickname,
                         Name = Name,
-                        ImagePath = "pic_profile.png",
+                        ImagePath = ImagePath,
                         Description = Description,
                         CreationTime = DateTime.Now
                     };
@@ -118,7 +118,7 @@ namespace newProfileBook.ViewModel
                 }
                 else
                 {
-                    await Prism.PrismApplicationBase.Current.MainPage.DisplayAlert("WARNING","Поля не могут быть пустыми","Ok");
+                     await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
                 }
             }
             else
@@ -128,7 +128,7 @@ namespace newProfileBook.ViewModel
                 {
                     Nickname = Nickname,
                     Name = Name,
-                    ImagePath = "pic_profile.png",
+                    ImagePath = ImagePath,
                     Description = Description,
                     CreationTime = DateTime.Now
                 };
@@ -141,7 +141,7 @@ namespace newProfileBook.ViewModel
                 }
                 else
                 {
-                    await Prism.PrismApplicationBase.Current.MainPage.DisplayAlert("WARNING", "Поля не могут быть пустыми", "Ok");
+                    await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
                 }
             }
         }
@@ -178,11 +178,13 @@ namespace newProfileBook.ViewModel
         {
             var image = await _media.TakePhotoAsync(new StoreCameraMediaOptions
             {
-                Name = "CamPic.jpg"
+                Name = $"xamarin.{DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss")}.jpg",
+                SaveToAlbum=true
             });
+            
             if (image != null)
             {
-                ImagePath = image.Path;
+                ImagePath = image.Path; 
             }
         }
 
@@ -201,7 +203,7 @@ namespace newProfileBook.ViewModel
                 Nickname = profile.Nickname;
                 Name = profile.Name;
                 Description = profile.Description;
-                imagePath = profile.ImagePath;
+                ImagePath = profile.ImagePath;
             }
             else
             {
@@ -211,5 +213,6 @@ namespace newProfileBook.ViewModel
 
         #endregion
 
+        
     }
 }

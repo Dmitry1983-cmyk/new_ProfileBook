@@ -1,31 +1,30 @@
 ﻿using newProfileBook.Services.Repository;
-using SQLite;
-using System;
+using Prism.Mvvm;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using System.Linq;
+
 
 namespace newProfileBook.Services.Authentitication
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : BindableBase, IAuthenticationService
     {
         private readonly IRepository _repository;
+
         public AuthenticationService(IRepository repository)
         {
             _repository = repository;
         }
+
         public int Authenticate(string login, string password)
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
-            var database = new SQLiteAsyncConnection(path);
+            var profile = (IEnumerable<ProfileModel>)_repository.GetAllAsync<ProfileModel>();//exception null ref
+            profile.FirstOrDefault(x => x.Login == login && x.Password == password);
 
-            var user = database.Table<ProfileModel>().Where(x => x.Login == login && x.Password == password).FirstOrDefaultAsync();
-
-            if (user != null)
-                return user.Id;
+            if (profile != null)
+                return 1;
             else
                 return 0;
-
         }
+
     }
 }

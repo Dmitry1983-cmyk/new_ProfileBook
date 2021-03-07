@@ -10,13 +10,15 @@
             x:Name="txtLogin" 
             Placeholder="Login"
             MaxLength="16"
-            Margin="80,200,80,0" />
+            Margin="80,200,80,0"
+            Text="{Binding Login}"/>
         <Entry
             x:Name="txtPassword"
             Placeholder="Password"
             MaxLength="16"
             Margin="80,0,80,0"
             IsPassword="True"
+            Text="{Binding Password}"
             />
         <Button
             x:Name="btnLogIn"

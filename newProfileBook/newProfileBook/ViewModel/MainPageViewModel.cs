@@ -8,10 +8,12 @@ using newProfileBook.Services.Repository;
 using SQLite;
 using System.IO;
 using System;
+using newProfileBook.Services.Authentitication;
+using newProfileBook.Services.Authorization;
 
 namespace newProfileBook
 {
-    public class MainPageViewModel: BindableBase
+    public class MainPageViewModel: BindableBase, INavigationAware
     {
         private readonly INavigationService _navigateService;
         private IUserDialogs _userDialogs;
@@ -20,6 +22,14 @@ namespace newProfileBook
         public string _title;
         public string _login;
         public string _password;
+        public int _id;
+
+        public int Id
+        {
+            get { return _id; }
+            set { SetProperty(ref _id, value); }
+        }
+
         public string Title
         {
             get { return _title; }
@@ -38,13 +48,18 @@ namespace newProfileBook
             set { SetProperty(ref _password, value); }
         }
 
+        IAuthenticationService _authenticationService;
+        IAuthorizationService _authorizationService;
+
         #region--ctor
-        public MainPageViewModel(INavigationService navigationService, IRepository repository)
+        public MainPageViewModel(INavigationService navigationService, IRepository repository, IAuthenticationService authenticationService)//, IAuthorizationService authorizationService
         {
             Title = "Main Page";
             _navigateService = navigationService;
             _repository = repository;
 
+            _authenticationService = authenticationService;
+            //_authorizationService = authorizationService;
         }
 
         #endregion
@@ -53,7 +68,7 @@ namespace newProfileBook
         public ICommand OnTapSignUpPage => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
-            await _navigateService.NavigateAsync($"{nameof(RegisterPageView)}");
+            await _navigateService.NavigateAsync(nameof(RegisterPageView));
         }
 
         public ICommand OnTapLogin => new Command(ExecuteNavigateCommand_MainList);
@@ -66,7 +81,7 @@ namespace newProfileBook
             if (user != null)
             {
 
-                await _navigateService.NavigateAsync($"{nameof(MainListPageView)}");//login/pass Vasya 
+                await _navigateService.NavigateAsync(nameof(MainListPageView));//login/pass Vasya 
 
             }
             else
@@ -74,6 +89,22 @@ namespace newProfileBook
                 await App.Current.MainPage.DisplayAlert("Warning", "Incorrect Login or Password", "OK");
             }
 
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            var profile = parameters.GetValue<ProfileModel>("user");
+            if (profile != null)
+            {
+                Id = profile.Id;
+                Login = profile.Login;
+                Password = profile.Password;
+            }
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

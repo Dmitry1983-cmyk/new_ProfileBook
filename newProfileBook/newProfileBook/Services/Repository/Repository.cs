@@ -23,6 +23,7 @@ namespace newProfileBook.Services.Repository
 
                 return database;
             });
+
         }
 
         public async Task<int> DeleteAllItems<T>(T entity) where T : IEntityBase, new()

@@ -1,4 +1,6 @@
 ﻿using Acr.UserDialogs;
+using newProfileBook.Services.Authentitication;
+using newProfileBook.Services.Authorization;
 using newProfileBook.Services.Repository;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -37,11 +39,13 @@ namespace newProfileBook
             get { return _login; }
             set { SetProperty(ref _login, value); }
         }
+
         public string Password
         {
             get { return _password; }
             set { SetProperty(ref _password, value); }
         }
+
         public string Confirm
         {
             get { return _confirm; }
@@ -79,51 +83,74 @@ namespace newProfileBook
             }
         }
 
-        public SignUpPageViewModel(INavigationService navigationService, IRepository repository)
+        IAuthenticationService _authenticationService;
+
+        public SignUpPageViewModel(INavigationService navigationService, IRepository repository, IAuthenticationService authenticationService)
         {
             Title = "Sign Up Page";
             _navigateService = navigationService;
             _repository = repository;
 
+            _authenticationService = authenticationService;
         }
         public ICommand OnTapRegisterUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
-            var database = new SQLiteAsyncConnection(path);
-            var data = database.Table<ProfileModel>();
-            var txt_log_pass = data.Where(x => x.Login == Login && x.Password == Password).FirstOrDefaultAsync();
-
-            if (Login.Length < 9 && Login.Length != 0)
+            if (!string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password))
             {
-                if (Password.Length != 0 && Password.Length < 16)
+                if (Login.Length > 3 && Login.Length < 17)
                 {
-                    if (Password == Confirm)
+                    if(Password.Length>7 && Password.Length<17)
                     {
-                        if (txt_log_pass != null)
+                        if(Password==Confirm)
                         {
-                            var user = new ProfileModel()
+                            int query = _authenticationService.Authenticate(Login, Password);
+                            if (query == 0)
                             {
-                                Login = Login,
-                                Password = Password,
-                                Confirm = Confirm,
+                                var user = new ProfileModel()
+                                {
+                                    Login = Login,
+                                    Password = Password,
+                                    Confirm = Confirm,
 
-                                Name = Login,
-                                Nickname = Login,
-                                Description = Login,
-                                ImagePath = "pic_profile.png"
-                            };
-                            await _repository.InsertAsync(user);
-                            await _navigateService.NavigateAsync($"{nameof(MainPage)}");
+                                    Name = Login,
+                                    Nickname = Login,
+                                    Description = Login,
+                                    ImagePath = "pic_profile.png"
+                                };
+
+                                var param = new NavigationParameters();
+                                param.Add("user", user);
+
+                                await _repository.InsertAsync(user);
+                                await _navigateService.NavigateAsync(nameof(MainPage), param);
+                            }
+                            else
+                            {
+                                await App.Current.MainPage.DisplayAlert(null, "User Exists", "OK");
+                            }
                         }
                         else
                         {
-                             await App.Current.MainPage.DisplayAlert("Warning", "Incorrect Login or Password", "OK");
+                            await App.Current.MainPage.DisplayAlert(null, "password or confirm field incorrect", "Ok");
                         }
                     }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert(null, "Password at be least 8 and no more 16 letter", "Ok");
+                    }
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert(null, "Login at be least 4 and no more 16 letter", "Ok");
                 }
             }
-
+            else
+            {
+                await App.Current.MainPage.DisplayAlert(null, "fields cannot be empty", "Ok");
+            }
+            
+            
         }
     }
 }

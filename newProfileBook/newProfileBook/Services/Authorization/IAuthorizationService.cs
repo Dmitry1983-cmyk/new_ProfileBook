@@ -1,9 +1,4 @@
-﻿using newProfileBook.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace newProfileBook.Services.Authorization
 {
     public interface IAuthorizationService
