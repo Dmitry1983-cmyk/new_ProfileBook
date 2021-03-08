@@ -18,7 +18,7 @@
             <Image
             HeightRequest="200" 
             Margin="0,20"
-            Source="{Binding ImagePath}">
+            Source="{Binding PhotoImageSource}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ImageCommand}"/>
                 </Image.GestureRecognizers>

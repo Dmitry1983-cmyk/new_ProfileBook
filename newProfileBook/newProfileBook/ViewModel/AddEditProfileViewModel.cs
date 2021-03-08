@@ -5,18 +5,12 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Plugin.Media.Abstractions;
 using System.IO;
-using SQLite;
-using System.Linq;
-using Xamarin.Essentials;
-using Plugin.Media;
-using System.Threading.Tasks;
+using Prism.Commands;
+using newProfileBook.Model;
 
 namespace newProfileBook.ViewModel
 {
@@ -81,13 +75,12 @@ namespace newProfileBook.ViewModel
         #region--ctor
         public AddEditProfileViewModel(INavigationService navigationService, IRepository repository, IUserDialogs userDialogs, IMedia media)
         {
-            ImagePath = "pic_profile.png";
+            //ImagePath = "pic_profile.png";
+            PhotoImageSource = "pic_profile.png";
             _navigateService = navigationService;
             _repository = repository;
-
             _userDialogs = userDialogs;
             _media = media; 
-
         }
         #endregion
 
@@ -109,10 +102,10 @@ namespace newProfileBook.ViewModel
                         Name = Name,
                         ImagePath = ImagePath,
                         Description = Description,
-                        CreationTime = DateTime.Now
-                    };
+                        CreationTime = DateTime.Now,
+                };
 
-                    await _repository.UpdateAsync(profile);
+                await _repository.UpdateAsync(profile);
 
                     await _navigateService.NavigateAsync(nameof(MainListPageView));
                 }
@@ -171,6 +164,7 @@ namespace newProfileBook.ViewModel
             if (image != null)
             {
                 ImagePath = image.Path;
+                PhotoImageSource = ImageSource.FromStream(() => image.GetStream());
             }
             
         }
@@ -184,7 +178,8 @@ namespace newProfileBook.ViewModel
             
             if (image != null)
             {
-                ImagePath = image.Path; 
+                ImagePath = image.Path;
+                PhotoImageSource = ImageSource.FromStream(() => image.GetStream());
             }
         }
 
@@ -192,7 +187,6 @@ namespace newProfileBook.ViewModel
         {
             throw new NotImplementedException();
         }
-
         public void OnNavigatedTo(INavigationParameters parameters)
         {
             var profile = parameters.GetValue<ProfileModel>("profile");
@@ -203,7 +197,8 @@ namespace newProfileBook.ViewModel
                 Nickname = profile.Nickname;
                 Name = profile.Name;
                 Description = profile.Description;
-                ImagePath = profile.ImagePath;
+                var bytes = File.ReadAllBytes(profile.ImagePath);
+                PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(bytes));// bytes.GetStream());
             }
             else
             {
@@ -211,8 +206,16 @@ namespace newProfileBook.ViewModel
             }
         }
 
-        #endregion
 
-        
+        ImageSource photoImageSource;
+        public ImageSource PhotoImageSource
+        {
+            set
+            {
+                SetProperty(ref photoImageSource,value);
+            }
+            get => photoImageSource;
+        }
+        #endregion
     }
 }
