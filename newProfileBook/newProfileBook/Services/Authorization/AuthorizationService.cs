@@ -1,5 +1,5 @@
 ﻿using newProfileBook.Services.Repository;
-using newProfileBook.Services.Setting;
+using newProfileBook.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

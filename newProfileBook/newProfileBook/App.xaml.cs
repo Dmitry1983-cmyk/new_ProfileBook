@@ -2,10 +2,13 @@
 using newProfileBook.Services.Authentitication;
 using newProfileBook.Services.Authorization;
 using newProfileBook.Services.Repository;
+using newProfileBook.Services.Settings;
 using newProfileBook.View;
 using newProfileBook.ViewModel;
 using Plugin.Media;
 using Plugin.Settings;
+using Xamarin.Essentials.Interfaces;
+using Xamarin.Essentials.Implementation;
 using Prism;
 using Prism.Ioc;
 using Prism.Unity;
@@ -21,6 +24,7 @@ namespace newProfileBook
         protected override async void OnInitialized()
         {
             InitializeComponent();
+            
             await NavigationService.NavigateAsync("NavigationPage/MainPage");
         }
 
@@ -38,6 +42,8 @@ namespace newProfileBook
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
+
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<RegisterPageView,SignUpPageViewModel>();
@@ -47,11 +53,16 @@ namespace newProfileBook
 
             containerRegistry.RegisterInstance(UserDialogs.Instance);
             containerRegistry.RegisterInstance(CrossMedia.Current);
-            
 
-            containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
-            containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
-            //containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());// Prism.Ioc.ContainerResolutionException:
+            containerRegistry.RegisterSingleton<IRepository, Repository>();
+            containerRegistry.RegisterSingleton<IAuthorizationService, AuthorizationService>();
+            containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
+            containerRegistry.RegisterSingleton<ISettingsUsers, SettingsUsers>();
+
+            //containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());// Prism.Ioc.ContainerResolutionException:
+            //containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());
+            //containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
+            //containerRegistry.RegisterInstance<ISettingsUsers>(Container.Resolve<SettingsUsers>());
         }
     }
 }

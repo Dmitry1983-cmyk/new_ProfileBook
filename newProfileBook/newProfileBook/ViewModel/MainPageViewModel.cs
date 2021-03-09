@@ -81,7 +81,7 @@ namespace newProfileBook
             if (user != null)
             {
 
-                await _navigateService.NavigateAsync(nameof(MainListPageView));//login/pass Vasya 
+                await _navigateService.NavigateAsync(nameof(MainListPageView)); 
 
             }
             else

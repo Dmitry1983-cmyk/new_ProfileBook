@@ -75,7 +75,6 @@ namespace newProfileBook.ViewModel
         #region--ctor
         public AddEditProfileViewModel(INavigationService navigationService, IRepository repository, IUserDialogs userDialogs, IMedia media)
         {
-            //ImagePath = "pic_profile.png";
             PhotoImageSource = "pic_profile.png";
             _navigateService = navigationService;
             _repository = repository;
@@ -191,18 +190,19 @@ namespace newProfileBook.ViewModel
         {
             var profile = parameters.GetValue<ProfileModel>("profile");
             if (profile != null)
-            {
+            { 
                 Id = profile.Id;
                 Title = "Edit profile";
                 Nickname = profile.Nickname;
                 Name = profile.Name;
                 Description = profile.Description;
                 var bytes = File.ReadAllBytes(profile.ImagePath);
-                PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(bytes));// bytes.GetStream());
+                PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(bytes));
             }
             else
             {
                 Title = "Add profile";
+                PhotoImageSource = "pic_profile.png";
             }
         }
 

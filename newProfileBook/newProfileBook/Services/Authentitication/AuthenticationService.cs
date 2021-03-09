@@ -17,13 +17,21 @@ namespace newProfileBook.Services.Authentitication
 
         public int Authenticate(string login, string password)
         {
-            var profile = (IEnumerable<ProfileModel>)_repository.GetAllAsync<ProfileModel>();//exception null ref
-            profile.FirstOrDefault(x => x.Login == login && x.Password == password);
-
-            if (profile != null)
-                return 1;
-            else
-                return 0;
+            
+            try
+            {
+                var profile = (IEnumerable<ProfileModel>)_repository.GetAllAsync<ProfileModel>();
+                profile.Where(x => x.Login == login && x.Password == password).FirstOrDefault();
+                if (profile != null)
+                    return 1;
+                else
+                    return 0;
+            }
+            catch (System.Exception e)
+            {
+                App.Current.MainPage.DisplayAlert("Exception",e.ToString(),null,"Ok");
+            }
+            return 0;
         }
 
     }

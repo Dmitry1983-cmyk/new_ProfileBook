@@ -17,6 +17,5 @@ namespace newProfileBook.Services.Repository
         Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new();
 
         Task<int> DeleteAllItems<T>(T entity) where T : IEntityBase, new();
-
     }
 }
