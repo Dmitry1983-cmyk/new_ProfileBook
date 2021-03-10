@@ -11,10 +11,12 @@ using Plugin.Media.Abstractions;
 using System.IO;
 using Prism.Commands;
 using newProfileBook.Model;
+using newProfileBook.Services.Settings;
+using newProfileBook.Services;
 
 namespace newProfileBook.ViewModel
 {
-    public class AddEditProfileViewModel : BindableBase,INavigationAware
+    public class AddEditProfileViewModel : ViewModelBase
     {
         public string _title;
         public int _id;
@@ -22,11 +24,14 @@ namespace newProfileBook.ViewModel
         public string _name;
         public string _cdescription;
         private string imagePath;
+        private Profile profile;
+        ImageSource photoImageSource;
 
         private readonly INavigationService _navigateService;
+        private readonly ISettingsUsers _settingsUsers;
+        private readonly IProfileService _profileService;
         private IUserDialogs _userDialogs;
         private IMedia _media;
-        private IRepository _repository;
 
 
         public int Id
@@ -72,14 +77,38 @@ namespace newProfileBook.ViewModel
             }
         }
 
-        #region--ctor
-        public AddEditProfileViewModel(INavigationService navigationService, IRepository repository, IUserDialogs userDialogs, IMedia media)
+        public ImageSource PhotoImageSource
         {
+            set
+            {
+                SetProperty(ref photoImageSource, value);
+            }
+            get => photoImageSource;
+        }
+
+        public Profile Profile
+        {
+            get { return profile; }
+            set
+            {
+                SetProperty(ref profile, value);
+            }
+        }
+
+
+        #region--ctor
+
+        public AddEditProfileViewModel(INavigationService navigationService, IUserDialogs userDialogs,
+            IMedia media, ISettingsUsers settingsUsers, IProfileService profileService):base(navigationService)
+        {
+            Title = "Add profile";
             PhotoImageSource = "pic_profile.png";
             _navigateService = navigationService;
-            _repository = repository;
+            _settingsUsers = settingsUsers;
+            _profileService = profileService;
             _userDialogs = userDialogs;
-            _media = media; 
+            _media = media;
+            Profile = new Profile();
         }
         #endregion
 
@@ -89,45 +118,17 @@ namespace newProfileBook.ViewModel
         public ICommand AddProfile => new Command(ExecuteNavigateCommand);
         private async void ExecuteNavigateCommand()
         {
-
-            if (Title== "Edit profile")
+            if (Title == "Edit profile")
             {
-                if (Nickname.Length!=0 && Name.Length!=0)
+                if (Nickname.Length != 0 && Name.Length != 0)
                 {
-                    var profile = new ProfileModel()
-                    {
-                        Id = Id,
-                        Nickname = Nickname,
-                        Name = Name,
-                        ImagePath = ImagePath,
-                        Description = Description,
-                        CreationTime = DateTime.Now,
-                };
-
-                await _repository.UpdateAsync(profile);
-
-                    await _navigateService.NavigateAsync(nameof(MainListPageView));
-                }
-                else
-                {
-                     await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
-                }
-            }
-            else
-            {
-                Title = "Add profile";
-                var profile = new ProfileModel()
-                {
-                    Nickname = Nickname,
-                    Name = Name,
-                    ImagePath = ImagePath,
-                    Description = Description,
-                    CreationTime = DateTime.Now
-                };
-                if (!string.IsNullOrEmpty(Nickname) && !string.IsNullOrEmpty(Name))
-                {
-
-                    await _repository.InsertAsync(profile);
+                    Profile.New_Id = _settingsUsers.CurrentUser;
+                    Profile.Name = Name;
+                    Profile.Nickname = Nickname;
+                    Profile.Description = Description;
+                    Profile.DateTime = DateTime.Now;
+                    Profile.ImgPath = ImagePath;
+                    _profileService.SaveProfile(Profile);
 
                     await _navigateService.NavigateAsync(nameof(MainListPageView));
                 }
@@ -136,6 +137,30 @@ namespace newProfileBook.ViewModel
                     await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
                 }
             }
+            else
+            {
+                Title = "Add profile";
+                var profile = new Profile()
+                {
+                    Nickname = Nickname,
+                    Name = Name,
+                    ImgPath = ImagePath,
+                    Description = Description,
+                    DateTime = DateTime.Now
+                };
+                if (!string.IsNullOrEmpty(Nickname) && !string.IsNullOrEmpty(Name))
+                {
+
+                    _profileService.SaveProfile(profile);
+
+                    await _navigateService.NavigateAsync(nameof(MainListPageView));
+                }
+                else
+                {
+                    await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
+                }
+            }
+
         }
 
 
@@ -182,21 +207,20 @@ namespace newProfileBook.ViewModel
             }
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+       
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            throw new NotImplementedException();
-        }
-        public void OnNavigatedTo(INavigationParameters parameters)
-        {
-            var profile = parameters.GetValue<ProfileModel>("profile");
+            var profile = parameters.GetValue<Profile>("profile");
             if (profile != null)
             { 
-                Id = profile.Id;
+                Id = profile.New_Id;
                 Title = "Edit profile";
                 Nickname = profile.Nickname;
                 Name = profile.Name;
                 Description = profile.Description;
-                var bytes = File.ReadAllBytes(profile.ImagePath);
+                Profile = profile;
+                ImagePath = profile.ImgPath;
+                var bytes = File.ReadAllBytes(profile.ImgPath);
                 PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(bytes));
             }
             else
@@ -207,15 +231,6 @@ namespace newProfileBook.ViewModel
         }
 
 
-        ImageSource photoImageSource;
-        public ImageSource PhotoImageSource
-        {
-            set
-            {
-                SetProperty(ref photoImageSource,value);
-            }
-            get => photoImageSource;
-        }
         #endregion
     }
 }

@@ -8,47 +8,39 @@ using System.Threading.Tasks;
 
 namespace newProfileBook.Services.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : BaseModel, new()
     {
-        private Lazy<SQLiteAsyncConnection> _database;
-
+        private readonly SQLiteConnection database;
         public Repository()
         {
-            _database = new Lazy<SQLiteAsyncConnection>(() =>
-            {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
-                var database = new SQLiteAsyncConnection(path);
-
-                database.CreateTableAsync<ProfileModel>();
-
-                return database;
-            });
+            database = new SQLiteConnection(Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_3.db"));
+            database.CreateTable<Profile>();
+            database.CreateTable<User>();
         }
-
-        public async Task<int> DeleteAllItems<T>(T entity) where T : IEntityBase, new()
+        public IEnumerable<T> GetItems()
         {
-            return await _database.Value.DeleteAllAsync<T>();
+            return database.Table<T>();
         }
-
-        public async Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
+        public T GetItem(int id)
         {
-            return await _database.Value.DeleteAsync<T>(entity.Id);
+            return database.Get<T>(id);
         }
-
-        public async Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new()
+        public int DeleteItem(int id)
         {
-            return await _database.Value.Table<T>().ToListAsync();
+            return database.Delete<T>(id);
         }
-
-        public async Task<int> InsertAsync<T>(T entity) where T : IEntityBase, new()
+        public int DeleteAllItems()
         {
-            return await _database.Value.InsertAsync(entity);
+            return database.DeleteAll<T>();
         }
-
-        public async Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new()
+        public int UpdateItem(T item)
         {
-            return await _database.Value.UpdateAsync(entity);
+            return database.Update(item);
         }
-
+        public int InsertItem(T item)
+        {
+            return database.Insert(item);
+        }
     }
 }

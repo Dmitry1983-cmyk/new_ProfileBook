@@ -10,30 +10,27 @@ using System.IO;
 using System;
 using newProfileBook.Services.Authentitication;
 using newProfileBook.Services.Authorization;
+using newProfileBook.Model;
+using newProfileBook.ViewModel;
 
 namespace newProfileBook
 {
-    public class MainPageViewModel: BindableBase, INavigationAware
+    public class MainPageViewModel: ViewModelBase, INavigationAware
     {
         private readonly INavigationService _navigateService;
-        private IUserDialogs _userDialogs;
-        IRepository _repository;
+        private readonly IUserDialogs _userDialogs;
 
-        public string _title;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IAuthorizationService _authorizationService;
+
+        private User _user;
         public string _login;
         public string _password;
-        public int _id;
 
-        public int Id
+        public User User
         {
-            get { return _id; }
-            set { SetProperty(ref _id, value); }
-        }
-
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get { return _user; }
+            set { SetProperty(ref _user, value); }
         }
 
         public string Login
@@ -48,18 +45,17 @@ namespace newProfileBook
             set { SetProperty(ref _password, value); }
         }
 
-        IAuthenticationService _authenticationService;
-        IAuthorizationService _authorizationService;
 
         #region--ctor
-        public MainPageViewModel(INavigationService navigationService, IRepository repository, IAuthenticationService authenticationService)//, IAuthorizationService authorizationService
+        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, 
+            IAuthorizationService authorizationService, IUserDialogs userDialogs) : base(navigationService)
         {
             Title = "Main Page";
+            User = new User();
             _navigateService = navigationService;
-            _repository = repository;
-
             _authenticationService = authenticationService;
-            //_authorizationService = authorizationService;
+            _authorizationService = authorizationService;
+            _userDialogs = userDialogs;
         }
 
         #endregion
@@ -74,29 +70,23 @@ namespace newProfileBook
         public ICommand OnTapLogin => new Command(ExecuteNavigateCommand_MainList);
         async private void ExecuteNavigateCommand_MainList()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook_2.db3");
-            var database = new SQLiteAsyncConnection(path);
-
-            var user = database.Table<ProfileModel>().Where(x => x.Login == Login && x.Password == Password).FirstOrDefaultAsync();
-            if (user != null)
+            int id = _authenticationService.Authenticate(User.Login, User.Password);//dm_i_try 12345678 qwer 12345678
+            if (id != 0)//изменить на !=0  -не корректно работает
             {
-
-                await _navigateService.NavigateAsync(nameof(MainListPageView)); 
-
+                _authorizationService.Authorizate(id);
+                await _navigateService.NavigateAsync(nameof(MainListPageView));
             }
             else
             {
                 await App.Current.MainPage.DisplayAlert("Warning", "Incorrect Login or Password", "OK");
             }
-
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            var profile = parameters.GetValue<ProfileModel>("user");
+            var profile = parameters.GetValue<User>("user");
             if (profile != null)
             {
-                Id = profile.Id;
                 Login = profile.Login;
                 Password = profile.Password;
             }

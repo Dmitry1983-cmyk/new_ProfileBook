@@ -1,7 +1,9 @@
 ﻿using Acr.UserDialogs;
+using newProfileBook.Model;
 using newProfileBook.Services.Authentitication;
 using newProfileBook.Services.Authorization;
 using newProfileBook.Services.Repository;
+using newProfileBook.ViewModel;
 using Prism.Mvvm;
 using Prism.Navigation;
 using SQLite;
@@ -12,21 +14,19 @@ using Xamarin.Forms;
 
 namespace newProfileBook
 {
-    public class SignUpPageViewModel: BindableBase
+    public class SignUpPageViewModel : BindableBase //BindableBase ViewModelBase
     {
-        private INavigationService _navigateService;
-        IRepository _repository;
-        IUserDialogs _userDialogs;
+        private readonly INavigationService _navigateService;
+
+        private readonly IRepository<User> _repository;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IAuthorizationService _authorizationService;
+        //private readonly IUserDialogs _userDialogs;
 
         public string _title;
         public string _login;
         public string _password;
         public string _confirm;
-
-        public string _nickname;
-        public string _name;
-        public string _cdescription;
-        private string imagePath;
 
         public string Title
         {
@@ -52,40 +52,7 @@ namespace newProfileBook
             set { SetProperty(ref _confirm, value); }
         }
 
-        public string Nickname
-        {
-            get { return _nickname; }
-            set { SetProperty(ref _nickname, value); }
-        }
-
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
-
-        public string Description
-        {
-            get { return _cdescription; }
-            set
-            {
-                SetProperty(ref _cdescription, value);
-            }
-        }
-
-        public string ImagePath
-        {
-            get { return imagePath; }
-            set
-            {
-                imagePath = value;
-                SetProperty(ref imagePath, value);
-            }
-        }
-
-        IAuthenticationService _authenticationService;
-
-        public SignUpPageViewModel(INavigationService navigationService, IRepository repository, IAuthenticationService authenticationService)
+        public SignUpPageViewModel(INavigationService navigationService, IRepository<User> repository, IAuthenticationService authenticationService)
         {
             Title = "Sign Up Page";
             _navigateService = navigationService;
@@ -93,6 +60,15 @@ namespace newProfileBook
 
             _authenticationService = authenticationService;
         }
+        //public SignUpPageViewModel(INavigationService navigationService, IRepository<User> repository, 
+        //    IAuthenticationService authenticationService, IAuthorizationService authorizationService)
+        //{
+        //    Title = "Sign Up Page";
+        //    _navigateService = navigationService;
+        //    _repository = repository;
+        //    _authorizationService = authorizationService;
+        //    _authenticationService = authenticationService;
+        //}
         public ICommand OnTapRegisterUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
@@ -107,22 +83,17 @@ namespace newProfileBook
                             int query = _authenticationService.Authenticate(Login, Password);
                             if (query == 0)
                             {
-                                var user = new ProfileModel()
+                                var user = new User()
                                 {
                                     Login = Login,
                                     Password = Password,
                                     Confirm = Confirm,
-
-                                    Name = Login,
-                                    Nickname = Login,
-                                    Description = Login,
-                                    ImagePath = "pic_profile.png"
                                 };
 
                                 var param = new NavigationParameters();
                                 param.Add("user", user);
 
-                                await _repository.InsertAsync(user);
+                                 _repository.InsertItem(user);
                                 await _navigateService.NavigateAsync(nameof(MainPage), param);
                             }
                             else

@@ -14,7 +14,7 @@ namespace newProfileBook.ViewModel
     class SettingsPageViewModel : BindableBase, INavigationAware
     {
         private readonly ISettingsUsers _settingsUsers;
-        private readonly IRepository _repository;
+        private readonly IRepository<User> _repository;
         private readonly IUserDialogs _userDialogs;
         private Sorted _sorted;
         private string _title;
@@ -117,7 +117,7 @@ namespace newProfileBook.ViewModel
         #region----ctor
 
 
-        public SettingsPageViewModel(IRepository repository, IUserDialogs userDialogs, ISettingsUsers settingsUsers)//, ISettingsUsers settingsUsers
+        public SettingsPageViewModel(IRepository<User> repository, IUserDialogs userDialogs, ISettingsUsers settingsUsers)
         {
             Title = "Setting Page";
             _repository = repository;

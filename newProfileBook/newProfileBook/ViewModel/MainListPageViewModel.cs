@@ -9,48 +9,25 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System;
 using Acr.UserDialogs;
+using newProfileBook.Model;
+using newProfileBook.Services;
+using newProfileBook.ViewModel;
+using newProfileBook.Services.Settings;
 
 namespace newProfileBook
 {
-    class MainListPageViewModel : BindableBase, IInitializeAsync
+    class MainListPageViewModel : ViewModelBase
     {
         private readonly INavigationService _navigateService;
-        private IRepository _repository;
+        private readonly IRepository<User> _repository;
+        private readonly ISettingsUsers _settingsUsers;
+        private readonly IProfileService _profileService;
 
-        private string _title;
-        public string _nickname;
-        public string _name;
-        public string _imgPath;
-        private ObservableCollection<ProfileModel> _profileList;
+        private ObservableCollection<Profile> _profileList;
 
         #region---property
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
 
-        public string Nickname
-        {
-            get { return _nickname; }
-            set { SetProperty(ref _nickname, value); }
-        }
-
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
-
-        public string ImagePath
-        {
-            get { return _imgPath; }
-            set 
-            {
-                SetProperty(ref _imgPath,value);
-            }
-        }
-        public ObservableCollection<ProfileModel> ProfileList
+        public ObservableCollection<Profile> ProfileList
         {
             get => _profileList;
             set => SetProperty(ref _profileList, value);
@@ -59,22 +36,28 @@ namespace newProfileBook
         #endregion
 
         #region --ctor
-        public MainListPageViewModel(INavigationService navigationService, IRepository repository)
+        public MainListPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers, 
+            IRepository<User> repository, IProfileService profileService) : base(navigationService)
         {
             Title = "Main List Page";
             _navigateService = navigationService;
+            _settingsUsers = settingsUsers;
             _repository = repository;
-
+            _profileService = profileService;
+            Print();
         }
-
 
         #endregion
 
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            Print();
+        }
 
         #region--methods
 
-        public ICommand EditCommand => new Command<ProfileModel>(OnAddEditTappedCommandAsync);
-        private async void OnAddEditTappedCommandAsync(ProfileModel profile)
+        public ICommand EditCommand => new Command<Profile>(OnAddEditTappedCommandAsync);
+        private async void OnAddEditTappedCommandAsync(Profile profile)
         {
             var param = new NavigationParameters();
             param.Add("profile", profile);
@@ -91,7 +74,7 @@ namespace newProfileBook
         public ICommand LogOutTappedCommand =>new Command(OnLogOutCommandAsync);
         private async void OnLogOutCommandAsync()
         {
-            //придумать как сделать logout
+            _settingsUsers.CurrentUser = -1;
             await _navigateService.NavigateAsync("/NavigationPage/MainPage");
         }
 
@@ -101,33 +84,26 @@ namespace newProfileBook
             await _navigateService.NavigateAsync(nameof(SettingsPage));
         }
 
-        public ICommand RemoveCommand => new Command<ProfileModel>(OnRemoveTappedCommandAsync);
-        private async void OnRemoveTappedCommandAsync(ProfileModel profile)
+        public ICommand RemoveCommand => new Command<Profile>(OnRemoveTappedCommandAsync);
+        private async void OnRemoveTappedCommandAsync(Profile profile)
         {
             var query = await App.Current.MainPage.DisplayAlert("Delete Profile", "Are you want to delete " + profile.Nickname + " ?", "Ok", "Cancel");
             if (query)
             {
-                await _repository.DeleteAsync(profile);
+                _profileService.DeleteProfile(profile.Id);
                 ProfileList.Remove(profile);
             }
         }
 
-        #endregion
-
-
-        #region --- show data users from db
-
-        public async Task InitializeAsync(INavigationParameters parameters)
+        public void Print()
         {
-            var profileList = await _repository.GetAllAsync<ProfileModel>();
-            ProfileList = new ObservableCollection<ProfileModel>(profileList);
+            ProfileList = new ObservableCollection<Profile>(_profileService.GetProfiles());
         }
-
         #endregion
 
         #region --selected item
-        private ProfileModel _selectedItem;
-        public ProfileModel SelectedItem
+        private Profile _selectedItem;
+        public Profile SelectedItem
         {
             get { return _selectedItem; }
             set { SetProperty(ref _selectedItem, value); }
@@ -137,10 +113,11 @@ namespace newProfileBook
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
-            //if(args.PropertyName==nameof(SelectedItem))
-            //{
-            //    Title = SelectedItem.Nickname;
-            //}
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            throw new NotImplementedException();
         }
 
 

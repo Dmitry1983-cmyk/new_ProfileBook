@@ -13,6 +13,8 @@ using Prism;
 using Prism.Ioc;
 using Prism.Unity;
 using Xamarin.Forms;
+using newProfileBook.Model;
+using newProfileBook.Services;
 
 namespace newProfileBook
 {
@@ -21,11 +23,12 @@ namespace newProfileBook
         public App():this(null) { }
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-        protected override async void OnInitialized()
+        protected override  void OnInitialized()
         {
             InitializeComponent();
-            
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+
+            NavigationService.NavigateAsync("NavigationPage/MainPage");
+
         }
 
         protected override void OnStart()
@@ -52,17 +55,15 @@ namespace newProfileBook
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
 
             containerRegistry.RegisterInstance(UserDialogs.Instance);
-            containerRegistry.RegisterInstance(CrossMedia.Current);
+            containerRegistry.RegisterInstance(CrossMedia.Current); 
+            containerRegistry.RegisterInstance(CrossSettings.Current);
 
-            containerRegistry.RegisterSingleton<IRepository, Repository>();
+            containerRegistry.RegisterSingleton<ISettingsUsers, SettingsUsers>();
+            containerRegistry.RegisterSingleton<IRepository<User>, Repository<User>>();
+            containerRegistry.RegisterSingleton<IRepository<Profile>, Repository<Profile>>();
             containerRegistry.RegisterSingleton<IAuthorizationService, AuthorizationService>();
             containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
-            containerRegistry.RegisterSingleton<ISettingsUsers, SettingsUsers>();
-
-            //containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());// Prism.Ioc.ContainerResolutionException:
-            //containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());
-            //containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
-            //containerRegistry.RegisterInstance<ISettingsUsers>(Container.Resolve<SettingsUsers>());
+            containerRegistry.RegisterSingleton<IProfileService, ProfileService>();
         }
     }
 }

@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace newProfileBook.Services.Repository
 {
-    public  interface IRepository
+    public  interface IRepository<T> where T : BaseModel, new()
     {
-        Task<int> InsertAsync<T>(T entity) where T : IEntityBase, new();
-
-        Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new();
-
-        Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new();
-
-        Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new();
-
-        Task<int> DeleteAllItems<T>(T entity) where T : IEntityBase, new();
+        IEnumerable<T> GetItems();
+        T GetItem(int id);
+        int DeleteItem(int id);
+        int DeleteAllItems();
+        int UpdateItem(T item);
+        int InsertItem(T item);
     }
 }
