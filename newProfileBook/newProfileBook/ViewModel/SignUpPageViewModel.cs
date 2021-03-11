@@ -3,6 +3,7 @@ using newProfileBook.Model;
 using newProfileBook.Services.Authentitication;
 using newProfileBook.Services.Authorization;
 using newProfileBook.Services.Repository;
+using newProfileBook.Services.Settings;
 using newProfileBook.ViewModel;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -14,115 +15,68 @@ using Xamarin.Forms;
 
 namespace newProfileBook
 {
-    public class SignUpPageViewModel : BindableBase //BindableBase ViewModelBase
+    public class SignUpPageViewModel : ViewModelBase
     {
-        private readonly INavigationService _navigateService;
-
-        private readonly IRepository<User> _repository;
         private readonly IAuthenticationService _authenticationService;
-        private readonly IAuthorizationService _authorizationService;
-        //private readonly IUserDialogs _userDialogs;
 
-        public string _title;
-        public string _login;
-        public string _password;
-        public string _confirm;
+        public string Login { get; set; }
 
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
+        public string Password { get; set; }
 
-        public string Login
-        {
-            get { return _login; }
-            set { SetProperty(ref _login, value); }
-        }
+        public string Confirm { get; set; }
 
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value); }
-        }
 
-        public string Confirm
-        {
-            get { return _confirm; }
-            set { SetProperty(ref _confirm, value); }
-        }
-
-        public SignUpPageViewModel(INavigationService navigationService, IRepository<User> repository, IAuthenticationService authenticationService)
+        public SignUpPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers,
+            IAuthenticationService authenticationService) : base(navigationService, settingsUsers)
         {
             Title = "Sign Up Page";
-            _navigateService = navigationService;
-            _repository = repository;
-
+            _navigationService = navigationService;
+            _settingsUsers = settingsUsers;
             _authenticationService = authenticationService;
         }
-        //public SignUpPageViewModel(INavigationService navigationService, IRepository<User> repository, 
-        //    IAuthenticationService authenticationService, IAuthorizationService authorizationService)
-        //{
-        //    Title = "Sign Up Page";
-        //    _navigateService = navigationService;
-        //    _repository = repository;
-        //    _authorizationService = authorizationService;
-        //    _authenticationService = authenticationService;
-        //}
         public ICommand OnTapRegisterUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
-            if (!string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password))
+            switch (_authenticationService.Validate(Login, Password, Confirm))
             {
-                if (Login.Length > 3 && Login.Length < 17)
-                {
-                    if(Password.Length>7 && Password.Length<17)
-                    {
-                        if(Password==Confirm)
-                        {
-                            int query = _authenticationService.Authenticate(Login, Password);
-                            if (query == 0)
-                            {
-                                var user = new User()
-                                {
-                                    Login = Login,
-                                    Password = Password,
-                                    Confirm = Confirm,
-                                };
-
-                                var param = new NavigationParameters();
-                                param.Add("user", user);
-
-                                 _repository.InsertItem(user);
-                                await _navigateService.NavigateAsync(nameof(MainPage), param);
-                            }
-                            else
-                            {
-                                await App.Current.MainPage.DisplayAlert(null, "User Exists", "OK");
-                            }
-                        }
-                        else
-                        {
-                            await App.Current.MainPage.DisplayAlert(null, "password or confirm field incorrect", "Ok");
-                        }
-                    }
-                    else
-                    {
-                        await App.Current.MainPage.DisplayAlert(null, "Password at be least 8 and no more 16 letter", "Ok");
-                    }
-                }
-                else
-                {
-                    await App.Current.MainPage.DisplayAlert(null, "Login at be least 4 and no more 16 letter", "Ok");
-                }
+                case Validator.LoginIsTaken:
+                    await App.Current.MainPage.DisplayAlert(null, "User Exist. Try Again", "OK");
+                    break;
+                case Validator.LoginIsTooLong:
+                    await App.Current.MainPage.DisplayAlert(null, "Login Is Too Long", "OK");
+                    break;
+                case Validator.LoginIsTooShort:
+                    await App.Current.MainPage.DisplayAlert(null, "Login Is Too Short", "OK");
+                    break;
+                case Validator.LoginStartsWithNumber:
+                    await App.Current.MainPage.DisplayAlert(null, "Login Starts With Number", "OK");
+                    break;
+                case Validator.PasswordIsTooLong:
+                    await App.Current.MainPage.DisplayAlert(null, "Password Is Too Long", "OK");
+                    break;
+                case Validator.PasswordIsTooShort:
+                    await App.Current.MainPage.DisplayAlert(null, "Password Is Too Short", "OK");
+                    break;
+                case Validator.PasswordIsWeak:
+                    await App.Current.MainPage.DisplayAlert(null, "Password must contains at least one uppercase letter, one lowercase letter and one number", "OK");
+                    break;
+                case Validator.PasswordsAreNotEqual:
+                    await App.Current.MainPage.DisplayAlert(null, "Passwords Are Not Equal", "OK");
+                    break;
+                case Validator.Success:
+                    await App.Current.MainPage.DisplayAlert(null, "Register Succesfully", "OK");
+                    RegistrationSuccess();
+                    break;
             }
-            else
-            {
-                await App.Current.MainPage.DisplayAlert(null, "fields cannot be empty", "Ok");
-            }
-            
-            
+        }
+
+        private async void RegistrationSuccess()
+        {
+            _authenticationService.RegistrationUser(Login, Password);
+            var param = new NavigationParameters();
+            param.Add("user", Login);
+            await _navigationService.NavigateAsync(nameof(MainPage), param);
         }
     }
 }
- 
+

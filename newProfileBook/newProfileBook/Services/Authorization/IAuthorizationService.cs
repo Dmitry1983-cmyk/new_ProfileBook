@@ -5,7 +5,6 @@ namespace newProfileBook.Services.Authorization
 {
     public interface IAuthorizationService
     {
-        int Authorizate(int id);
-        int RegisterAsync(User item);
+        int Authorizate(string login, string password);
     }
 }

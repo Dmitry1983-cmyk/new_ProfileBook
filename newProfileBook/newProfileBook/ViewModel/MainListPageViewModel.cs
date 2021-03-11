@@ -18,9 +18,7 @@ namespace newProfileBook
 {
     class MainListPageViewModel : ViewModelBase
     {
-        private readonly INavigationService _navigateService;
-        private readonly IRepository<User> _repository;
-        private readonly ISettingsUsers _settingsUsers;
+        //private readonly ISettingsUsers _settingsUsers;
         private readonly IProfileService _profileService;
 
         private ObservableCollection<Profile> _profileList;
@@ -36,13 +34,11 @@ namespace newProfileBook
         #endregion
 
         #region --ctor
-        public MainListPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers, 
-            IRepository<User> repository, IProfileService profileService) : base(navigationService)
+        public MainListPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers,
+            IProfileService profileService) : base(navigationService, settingsUsers)
         {
             Title = "Main List Page";
-            _navigateService = navigationService;
             _settingsUsers = settingsUsers;
-            _repository = repository;
             _profileService = profileService;
             Print();
         }
@@ -61,13 +57,13 @@ namespace newProfileBook
         {
             var param = new NavigationParameters();
             param.Add("profile", profile);
-            await _navigateService.NavigateAsync(nameof(AddEditProfileView), param);
+            await _navigationService.NavigateAsync(nameof(AddEditProfileView), param);
         }
 
         public ICommand OnTapAddUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
-            await _navigateService.NavigateAsync($"{nameof(AddEditProfileView)}");
+            await _navigationService.NavigateAsync($"{nameof(AddEditProfileView)}");
         }
 
 
@@ -75,13 +71,13 @@ namespace newProfileBook
         private async void OnLogOutCommandAsync()
         {
             _settingsUsers.CurrentUser = -1;
-            await _navigateService.NavigateAsync("/NavigationPage/MainPage");
+            await _navigationService.NavigateAsync("/NavigationPage/MainPage");
         }
 
         public ICommand SettingsCommand => new Command(OnSettingsTappedCommandAsync);
         private async void OnSettingsTappedCommandAsync()
         {
-            await _navigateService.NavigateAsync(nameof(SettingsPage));
+            await _navigationService.NavigateAsync(nameof(SettingsPage));
         }
 
         public ICommand RemoveCommand => new Command<Profile>(OnRemoveTappedCommandAsync);
@@ -100,30 +96,6 @@ namespace newProfileBook
             ProfileList = new ObservableCollection<Profile>(_profileService.GetProfiles());
         }
         #endregion
-
-        #region --selected item
-        private Profile _selectedItem;
-        public Profile SelectedItem
-        {
-            get { return _selectedItem; }
-            set { SetProperty(ref _selectedItem, value); }
-        }
-
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            base.OnPropertyChanged(args);
-        }
-
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        #endregion
-
-
 
     }
 }

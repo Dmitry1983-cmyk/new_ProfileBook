@@ -20,9 +20,10 @@ namespace newProfileBook.ViewModel
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
-        public ViewModelBase(INavigationService navigationService)
+        public ViewModelBase(INavigationService navigationService, ISettingsUsers settingsUsers)
         {
             _navigationService = navigationService;
+            _settingsUsers = settingsUsers;
         }
 
         public virtual void Initialize(INavigationParameters parameters){}

@@ -12,48 +12,24 @@ using newProfileBook.Services.Authentitication;
 using newProfileBook.Services.Authorization;
 using newProfileBook.Model;
 using newProfileBook.ViewModel;
+using newProfileBook.Services.Settings;
 
 namespace newProfileBook
 {
-    public class MainPageViewModel: ViewModelBase, INavigationAware
+    public class MainPageViewModel: ViewModelBase
     {
-        private readonly INavigationService _navigateService;
         private readonly IUserDialogs _userDialogs;
-
-        private readonly IAuthenticationService _authenticationService;
         private readonly IAuthorizationService _authorizationService;
 
-        private User _user;
-        public string _login;
-        public string _password;
-
-        public User User
-        {
-            get { return _user; }
-            set { SetProperty(ref _user, value); }
-        }
-
-        public string Login
-        {
-            get { return _login; }
-            set { SetProperty(ref _login, value); }
-        }
-
-        public string Password
-        {
-            get { return _password; }
-            set { SetProperty(ref _password, value); }
-        }
+        public string Login{ get; set; }
+        public string Password{ get; set; }
 
 
         #region--ctor
-        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, 
-            IAuthorizationService authorizationService, IUserDialogs userDialogs) : base(navigationService)
+        public MainPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers, IAuthorizationService authorizationService,
+            IUserDialogs userDialogs) : base(navigationService,settingsUsers)
         {
             Title = "Main Page";
-            User = new User();
-            _navigateService = navigationService;
-            _authenticationService = authenticationService;
             _authorizationService = authorizationService;
             _userDialogs = userDialogs;
         }
@@ -64,35 +40,35 @@ namespace newProfileBook
         public ICommand OnTapSignUpPage => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
-            await _navigateService.NavigateAsync(nameof(RegisterPageView));
+            await _navigationService.NavigateAsync(nameof(RegisterPageView));
         }
 
         public ICommand OnTapLogin => new Command(ExecuteNavigateCommand_MainList);
         async private void ExecuteNavigateCommand_MainList()
         {
-            int id = _authenticationService.Authenticate(User.Login, User.Password);//dm_i_try 12345678 qwer 12345678
-            if (id != 0)//изменить на !=0  -не корректно работает
+            var chek = _authorizationService.Authorizate(Login, Password);//qwerty Q1qqqqqq
+            if (chek ==1)
             {
-                _authorizationService.Authorizate(id);
-                await _navigateService.NavigateAsync(nameof(MainListPageView));
+                await _navigationService.NavigateAsync(nameof(MainListPageView));
             }
             else
             {
-                await App.Current.MainPage.DisplayAlert("Warning", "Incorrect Login or Password", "OK");
+                await Application.Current.MainPage.DisplayAlert(null,"Error Login or Password","Ok");
+                Password = string.Empty;
+                RaisePropertyChanged($"{nameof(Password)}");
             }
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            var profile = parameters.GetValue<User>("user");
-            if (profile != null)
+            if (parameters.TryGetValue("user", out string login))
             {
-                Login = profile.Login;
-                Password = profile.Password;
+                Login = login;
+                RaisePropertyChanged($"{nameof(Login)}");
             }
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             throw new NotImplementedException();
         }

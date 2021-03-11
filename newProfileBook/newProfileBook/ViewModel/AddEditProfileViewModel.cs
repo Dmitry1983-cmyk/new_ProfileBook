@@ -27,8 +27,6 @@ namespace newProfileBook.ViewModel
         private Profile profile;
         ImageSource photoImageSource;
 
-        private readonly INavigationService _navigateService;
-        private readonly ISettingsUsers _settingsUsers;
         private readonly IProfileService _profileService;
         private IUserDialogs _userDialogs;
         private IMedia _media;
@@ -38,12 +36,6 @@ namespace newProfileBook.ViewModel
         {
             get { return _id; }
             set { SetProperty(ref _id, value); }
-        }
-
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
         }
 
         public string Nickname
@@ -99,11 +91,11 @@ namespace newProfileBook.ViewModel
         #region--ctor
 
         public AddEditProfileViewModel(INavigationService navigationService, IUserDialogs userDialogs,
-            IMedia media, ISettingsUsers settingsUsers, IProfileService profileService):base(navigationService)
+            IMedia media, ISettingsUsers settingsUsers, IProfileService profileService):base(navigationService,settingsUsers)
         {
             Title = "Add profile";
             PhotoImageSource = "pic_profile.png";
-            _navigateService = navigationService;
+            _navigationService = navigationService;
             _settingsUsers = settingsUsers;
             _profileService = profileService;
             _userDialogs = userDialogs;
@@ -130,7 +122,7 @@ namespace newProfileBook.ViewModel
                     Profile.ImgPath = ImagePath;
                     _profileService.SaveProfile(Profile);
 
-                    await _navigateService.NavigateAsync(nameof(MainListPageView));
+                    await _navigationService.NavigateAsync(nameof(MainListPageView));
                 }
                 else
                 {
@@ -148,12 +140,16 @@ namespace newProfileBook.ViewModel
                     Description = Description,
                     DateTime = DateTime.Now
                 };
+                if(profile.ImgPath==null)
+                {
+                    profile.ImgPath = "pic_profile.png";
+                }
                 if (!string.IsNullOrEmpty(Nickname) && !string.IsNullOrEmpty(Name))
                 {
 
                     _profileService.SaveProfile(profile);
 
-                    await _navigateService.NavigateAsync(nameof(MainListPageView));
+                    await _navigationService.NavigateAsync(nameof(MainListPageView));
                 }
                 else
                 {

@@ -3,6 +3,7 @@ using newProfileBook.Services.Repository;
 using newProfileBook.Services.Settings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace newProfileBook.Services.Authorization
@@ -21,23 +22,15 @@ namespace newProfileBook.Services.Authorization
 
         #endregion
 
-        public int Authorizate(int id)
+        public int Authorizate(string login, string password)
         {
-            return _settingsUsers.CurrentUser = id;
-        }
-
-        public int RegisterAsync(User profile)
-        {
-            if (profile.Id != 0)
+            var user = _repository.GetItems().Where(x => x.Login == login && x.Password == password).FirstOrDefault();
+            if (user != null)
             {
-                _repository.UpdateItem(profile);
-                return profile.Id;
+                _settingsUsers.CurrentUser = user.Id;
+                return 1;
             }
-            else
-            {
-                 _repository.InsertItem(profile);
-                return profile.Id;
-            }
+            else return 0;
         }
 
     }
