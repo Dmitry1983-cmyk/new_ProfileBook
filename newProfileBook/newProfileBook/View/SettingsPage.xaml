@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.SettingsPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             Style="{StaticResource PageStyle}"
+             >
 
     <ContentPage.ToolbarItems>
         <ToolbarItem
@@ -30,7 +32,8 @@
                 Grid.Row="0"
                 Text="Sort profiles"
                 VerticalOptions="Center"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center"
+                Style="{StaticResource LabelStyle}"/>
             <RadioButton 
                 Grid.Column="0" 
                 Grid.Row="1"
@@ -41,7 +44,8 @@
                 Grid.Row="1"
                 Text="Sort profiles by Name"
                 VerticalOptions="Center"
-                Margin="70,0,0,0"/>
+                Margin="70,0,0,0"
+                Style="{StaticResource LabelStyle}"/>
 
             <RadioButton
                 Grid.Column="0" 
@@ -52,7 +56,8 @@
                 Grid.Row="2"
                 Text="Sort profiles by Nickname"
                 VerticalOptions="Center"
-                Margin="70,0,0,0"/>
+                Margin="70,0,0,0"
+                Style="{StaticResource LabelStyle}"/>
 
             <RadioButton 
                 Grid.Column="0" 
@@ -65,13 +70,15 @@
                 Grid.Row="3"
                 Text="Sort profiles by Date"
                 VerticalOptions="Center"
-                Margin="70,0,0,0"/>
+                Margin="70,0,0,0"
+                Style="{StaticResource LabelStyle}"/>
 
             <Label 
                 Grid.Row="4"
                 Text="Theme"
                 VerticalOptions="Center"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center"
+                Style="{StaticResource LabelStyle}"/>
             <CheckBox
                 Grid.Row="5"
                 Margin="20,0,0,0"
@@ -80,13 +87,15 @@
                 Grid.Row="5"
                 Text="Day/Night Theme"
                 VerticalOptions="Center"
-                Margin="70,0,0,0"/>
+                Margin="70,0,0,0"
+                Style="{StaticResource LabelStyle}"/>
 
             <Label 
                 Grid.Row="6"
                 Text="Language"
                 VerticalOptions="Center"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center"
+                Style="{StaticResource LabelStyle}"/>
             <CheckBox
                 Grid.Row="7"
                 Margin="20,0,0,0"
@@ -95,7 +104,8 @@
                 Grid.Row="7"
                 Text="Eng/Rus Language"
                 VerticalOptions="Center"
-                Margin="70,0,0,0"/>
+                Margin="70,0,0,0"
+                Style="{StaticResource LabelStyle}"/>
 
         </Grid>
     </ContentPage.Content>

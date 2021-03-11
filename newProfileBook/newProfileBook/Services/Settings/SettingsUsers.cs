@@ -27,7 +27,11 @@ namespace newProfileBook.Services.Settings
         public int Theme
         {
             get => _settings.GetValueOrDefault(nameof(Theme), (int)OSAppTheme.Light);
-            set => _settings.AddOrUpdateValue(nameof(Theme), value);
+            set
+            {
+                _settings.AddOrUpdateValue(nameof(Theme), value);
+                Application.Current.UserAppTheme = (OSAppTheme)value;
+            }
         }
 
     }

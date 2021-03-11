@@ -47,18 +47,23 @@ namespace newProfileBook.Services
 
         public IEnumerable<Profile> SortProfiles()
         {
+            IEnumerable<Profile> profiles = GetProfiles();
             int sortKey = _settingsUsers.Sorting;
             switch (sortKey)
             {
-                case 0:
-                    return _repository.GetItems().Where(x => x.New_Id == _settingsUsers.CurrentUser).OrderBy(x => x.DateTime);
-                case 1:
-                    return _repository.GetItems().Where(x => x.New_Id == _settingsUsers.CurrentUser).OrderBy(x => x.Name);
-                case 2:
-                    return _repository.GetItems().Where(x => x.New_Id == _settingsUsers.CurrentUser).OrderBy(x => x.Nickname);
+                case (int)Sorted.DateTime:
+                    profiles= profiles.OrderBy(x => x.DateTime);
+                    break;
+                case (int)Sorted.Name:
+                    profiles = profiles.OrderBy(x => x.Name);
+                    break;
+                case (int)Sorted.Nickname:
+                    profiles = profiles.OrderBy(x => x.Nickname);
+                    break;
                 default:
-                    return _repository.GetItems().Where(x => x.New_Id == _settingsUsers.CurrentUser).OrderBy(x => x);
+                    break;
             }
+            return profiles;
         }
     }
 }

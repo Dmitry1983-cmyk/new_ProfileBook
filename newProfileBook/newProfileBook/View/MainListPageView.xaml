@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.MainListPageView"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             Style="{StaticResource PageStyle}"
+             >
 
 
     <ContentPage.ToolbarItems>
@@ -65,11 +67,16 @@
                                     <StackLayout VerticalOptions="Center">
                                         <Label 
                                         Text="{Binding Nickname}"
+                                        Style="{StaticResource LabelStyle}"
                                         FontAttributes="Bold"/>
                                         <Label 
-                                        Text="{Binding Name}"/>
+                                        Text="{Binding Name}"
+                                        Style="{StaticResource LabelStyle}"
+                                            />
                                         <Label 
-                                        Text="{Binding DateTime}"/>
+                                        Text="{Binding DateTime}"
+                                        Style="{StaticResource LabelStyle}"
+                                            />
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell.View>
@@ -86,12 +93,11 @@
             Margin="0,0,30,50" 
             HeightRequest="70"
             WidthRequest="70"
-            BackgroundColor="Blue"
             BorderWidth="5"
-            BorderColor="Gray"
             Text="+"
             FontSize="35"
             CornerRadius="35"
+            Style="{StaticResource CircleButton}"
             Command="{Binding OnTapAddUser}"/>
 
         </Grid>

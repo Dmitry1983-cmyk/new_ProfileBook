@@ -1,39 +1,22 @@
-﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using newProfileBook.Model;
 using Prism.Navigation;
-using newProfileBook.Services.Repository;
 using newProfileBook.Services.Settings;
 using Acr.UserDialogs;
 
 namespace newProfileBook.ViewModel
 {
-    class SettingsPageViewModel : BindableBase, INavigationAware
+    class SettingsPageViewModel : ViewModelBase
     {
-        private readonly ISettingsUsers _settingsUsers;
-        private readonly IRepository<User> _repository;
-        private readonly IUserDialogs _userDialogs;
-        private Sorted _sorted;
-        private string _title;
+        private IUserDialogs _userDialogs;
         private bool _sortName;
         private bool _sortNickname;
         private bool _sortDate;
 
-        private OSAppTheme _theme;
-        private bool _lightTheme;
-        private bool _darkTheme;
+        private bool _chekTheme;
 
 
         #region--prop
-
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
 
         public bool SortByName
         {
@@ -43,9 +26,7 @@ namespace newProfileBook.ViewModel
                 _sortName = value;
                 if(value==true)
                 {
-                    _sorted = Sorted.Name;
-                    SaveSorting();
-                    SetProperty(ref _sortName, value);
+                    _settingsUsers.Sorting = (int)Sorted.Name;
                 }
             }
         }
@@ -58,9 +39,7 @@ namespace newProfileBook.ViewModel
                 _sortNickname = value;
                 if (value == true)
                 {
-                    _sorted = Sorted.Nickname;
-                    SaveSorting();
-                    SetProperty(ref _sortNickname, value);
+                    _settingsUsers.Sorting = (int)Sorted.Nickname;
                 }
             }
         }
@@ -73,40 +52,24 @@ namespace newProfileBook.ViewModel
                 _sortDate = value;
                 if (value == true)
                 {
-                    _sorted = Sorted.Nickname;
-                    SaveSorting();
-                    SetProperty(ref _sortDate, value);
+                    _settingsUsers.Sorting = (int)Sorted.DateTime;
                 }
             }
         }
 
-        public bool LightTheme
+        public bool CheckTemeDarkLight
         {
-            get { return _lightTheme; }
+            get { return _chekTheme; }
             set
             {
-                _lightTheme = value;
+                _chekTheme = value;
                 if (value == true)
                 {
-                    Application.Current.UserAppTheme = OSAppTheme.Light;
-                    _theme = OSAppTheme.Light;
-                    SaveTheme();
-                    SetProperty(ref _lightTheme, value);
+                    _settingsUsers.Theme = (int)OSAppTheme.Dark;
                 }
-            }
-        }
-        public bool DarkTheme
-        {
-            get { return _darkTheme; }
-            set
-            {
-                _darkTheme = value;
-                if (value == true)
+                else
                 {
-                    Application.Current.UserAppTheme = OSAppTheme.Dark;
-                    _theme = OSAppTheme.Dark;
-                    SaveTheme();
-                    SetProperty(ref _darkTheme, value);
+                    _settingsUsers.Theme= (int)OSAppTheme.Light;
                 }
             }
         }
@@ -117,88 +80,43 @@ namespace newProfileBook.ViewModel
         #region----ctor
 
 
-        public SettingsPageViewModel(IRepository<User> repository, IUserDialogs userDialogs, ISettingsUsers settingsUsers)
+        public SettingsPageViewModel(IUserDialogs userDialogs,
+            ISettingsUsers settingsUsers, INavigationService navigationService) : base(navigationService, settingsUsers)
         {
             Title = "Setting Page";
-            _repository = repository;
             _userDialogs = userDialogs;
-            _settingsUsers = settingsUsers;
         }
 
 
         #endregion
 
         #region---methods
-        private void SaveSorting()
-        {
-            try
-            {
-                _settingsUsers.Sorting = (int)_sorted;
-                _userDialogs.ActionSheetAsync(null, "Sorted", "Ok");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                _userDialogs.ActionSheetAsync(null, e.ToString(), "Ok");
-            }
-            
-        }
 
-        void SetSorting()
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            switch ((int)_sorted)
+            switch(_settingsUsers.Sorting)
             {
-                case 0:
-                    {
-                        SortByDateTime = true;
-                        break;
-                    }
-                case 1:
-                    {
-                        SortByNickName = true;
-                        break;
-                    }
-                case 2:
-                    {
-                        SortByName = true;
-                        break;
-                    }
-                default: break;
+                case (int)Sorted.DateTime:
+                    SortByDateTime = true;
+                    RaisePropertyChanged(nameof(SortByDateTime));
+                    break;
+                case (int)Sorted.Nickname:
+                    SortByNickName = true;
+                    RaisePropertyChanged(nameof(SortByNickName));
+                    break;
+                case (int)Sorted.Name:
+                    SortByName = true;
+                    RaisePropertyChanged(nameof(SortByName));
+                    break;
+                default:
+                    break;
             }
-        }
 
-        private void SaveTheme()
-        {
-            _settingsUsers.Theme = (int)_theme;
-        }
-        void SetTheme()
-        {
-            switch ((int)_theme)
+            if(Application.Current.RequestedTheme == OSAppTheme.Dark)
             {
-                case 1:
-                    {
-                        LightTheme = true;
-                        break;
-                    }
-                case 2:
-                    {
-                        DarkTheme = true;
-                        break;
-                    }
-                default: break;
+                CheckTemeDarkLight = true;
+                RaisePropertyChanged(nameof(CheckTemeDarkLight));
             }
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
-        {
-            _sorted = (Sorted)_settingsUsers.Sorting;
-            SetSorting();
-            _theme = (OSAppTheme)_settingsUsers.Theme;
-            SetTheme();
-        }
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

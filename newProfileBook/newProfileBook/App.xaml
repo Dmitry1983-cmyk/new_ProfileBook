@@ -5,5 +5,101 @@
              x:Class="newProfileBook.App">
     <Application.Resources>
 
+
+        <Color x:Key="TransparentColor">Transparent</Color>
+
+        <!-- Light colors -->
+        <Color x:Key="LightBackgroundColor">#FFFACD</Color>
+        <Color x:Key="LightNavigationBarColor">#9ACD32</Color>
+        <Color x:Key="LightPrimaryColor">orange</Color>
+        <Color x:Key="LightSecondaryColor">#FFDEAD</Color>
+        <Color x:Key="LightPrimaryTextColor">#FFFFF0</Color>
+        <Color x:Key="LightSecondaryTextColor">gray</Color>
+        <Color x:Key="LightTertiaryTextColor">#2F4F4F</Color>
+        <Color x:Key="LigthFortyTextColor">black</Color>
+
+        <!-- Dark colors -->
+        <Color x:Key="DarkBackgroundColor">#2F4F4F</Color>
+        <Color x:Key="DarkNavigationBarColor">#006400</Color>
+        <Color x:Key="DarkPrimaryColor">#8FBC8F</Color>
+        <Color x:Key="DarkSecondaryColor">#FFFFF0</Color>
+        <Color x:Key="DarkPrimaryTextColor">#FFFFF0</Color>
+        <Color x:Key="DarkSecondaryTextColor">Black</Color>
+        <Color x:Key="DarkTertiaryTextColor">Gray</Color>
+
+        <!--toollbar-->
+            <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightNavigationBarColor}, 
+                                            Dark={StaticResource DarkNavigationBarColor}}" />
+            <Setter Property="BarTextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, 
+                                            Dark={StaticResource DarkPrimaryTextColor}}" />
+            <Setter Property="BackgroundColor"
+                    Value="Transparent"/>
+        </Style>
+
+        <!--pages-->
+        <Style x:Key="PageStyle"
+            TargetType="ContentPage">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding 
+                Light={StaticResource LightBackgroundColor},
+                Dark={StaticResource DarkBackgroundColor} }"/>
+        </Style>
+
+        <!--button-->
+        <Style x:Key="ButtonStyle"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding 
+                Light={StaticResource LightPrimaryColor}, 
+                Dark={StaticResource DarkPrimaryColor}}" />
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding 
+                Light={StaticResource LightPrimaryTextColor}, 
+                Dark={StaticResource DarkPrimaryTextColor}}" />
+        </Style>
+
+        <!--circlebutton-->
+        <Style x:Key="CircleButton"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightNavigationBarColor}, 
+                                            Dark={StaticResource DarkPrimaryColor}}" />
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTertiaryTextColor}, 
+                                            Dark={StaticResource DarkNavigationBarColor}}" />
+
+            <Setter Property="BorderColor"
+                    Value="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, 
+                                            Dark={StaticResource DarkSecondaryColor}}" />
+
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding 
+                Light={StaticResource LightPrimaryTextColor}, 
+                Dark={StaticResource DarkPrimaryTextColor}}" />
+        </Style>
+        
+        <!--entry-->
+        <Style x:Key="EntryStyle"
+               TargetType="Entry">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor}, 
+                                            Dark={StaticResource DarkSecondaryColor}}" />
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LigthFortyTextColor}, 
+                                            Dark={StaticResource LigthFortyTextColor}}" />
+        </Style>
+
+        <!--label-->
+
+        <Style x:Key="LabelStyle"
+               TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LigthFortyTextColor}, 
+                                            Dark={StaticResource DarkPrimaryTextColor}}" />
+        </Style>
+
     </Application.Resources>
 </prism:PrismApplication>

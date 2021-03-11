@@ -18,7 +18,6 @@ namespace newProfileBook
 {
     class MainListPageViewModel : ViewModelBase
     {
-        //private readonly ISettingsUsers _settingsUsers;
         private readonly IProfileService _profileService;
 
         private ObservableCollection<Profile> _profileList;
@@ -93,7 +92,7 @@ namespace newProfileBook
 
         public void Print()
         {
-            ProfileList = new ObservableCollection<Profile>(_profileService.GetProfiles());
+            ProfileList = new ObservableCollection<Profile>(_profileService.SortProfiles());
         }
         #endregion
 
