@@ -1,6 +1,7 @@
 ﻿using Plugin.Settings.Abstractions;
 using Xamarin.Forms;
 using newProfileBook.Model;
+using newProfileBook.Localization;
 
 namespace newProfileBook.Services.Settings
 {
@@ -31,6 +32,15 @@ namespace newProfileBook.Services.Settings
             {
                 _settings.AddOrUpdateValue(nameof(Theme), value);
                 Application.Current.UserAppTheme = (OSAppTheme)value;
+            }
+        }
+        public string Language
+        {
+            get => _settings.GetValueOrDefault(nameof(Language), "en");
+            set
+            {
+                _settings.AddOrUpdateValue(nameof(Language), value);
+                MessagingCenter.Send<object, CultureChangedMessage>(this, string.Empty, new CultureChangedMessage(value));
             }
         }
 

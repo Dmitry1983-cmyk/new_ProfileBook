@@ -1,4 +1,5 @@
-﻿using newProfileBook.Model;
+﻿using newProfileBook.Localization;
+using newProfileBook.Model;
 using newProfileBook.Services.Settings;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -14,6 +15,12 @@ namespace newProfileBook.ViewModel
         protected INavigationService _navigationService { get; set; }
         protected ISettingsUsers _settingsUsers { get; set; }
 
+        public LocalizedResources Resources
+        {
+            get;
+            private set;
+        }
+
         private string _title;
         public string Title
         {
@@ -24,6 +31,7 @@ namespace newProfileBook.ViewModel
         {
             _navigationService = navigationService;
             _settingsUsers = settingsUsers;
+            
         }
 
         public virtual void Initialize(INavigationParameters parameters){}

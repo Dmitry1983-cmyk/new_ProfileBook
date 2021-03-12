@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.MainPage"
+             xmlns:resources="clr-namespace:newProfileBook.RESX"
              Title="{Binding Title}"
              Style="{StaticResource PageStyle}"
              >
@@ -25,7 +26,7 @@
             />
         <Button
             x:Name="btnLogIn"
-            Text="log in"
+            Text="Login"
             HorizontalOptions="Center"
             VerticalOptions="Center"
             WidthRequest="250"
@@ -39,7 +40,7 @@
             >
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="SIGN UP">
+                    <Span Text="{x:Static resources:AppResources.register}">
                         <Span.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OnTapSignUpPage}"/>
                         </Span.GestureRecognizers>

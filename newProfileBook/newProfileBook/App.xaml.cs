@@ -20,14 +20,24 @@ namespace newProfileBook
 {
     public partial class App 
     {
+        private ISettingsUsers settingsUsers;
+        public static string CurrentLanguage = "en";
         public App():this(null) { }
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
-        protected override  void OnInitialized()
+        protected override void OnInitialized()
         {
             InitializeComponent();
+            settingsUsers = Container.Resolve<ISettingsUsers>();
 
-            NavigationService.NavigateAsync("NavigationPage/MainPage");
+            if (settingsUsers.CurrentUser == -1)
+            {
+                NavigationService.NavigateAsync("NavigationPage/MainPage");
+            }
+            else
+            {
+                NavigationService.NavigateAsync("NavigationPage/MainListPageView");
+            }
 
         }
 

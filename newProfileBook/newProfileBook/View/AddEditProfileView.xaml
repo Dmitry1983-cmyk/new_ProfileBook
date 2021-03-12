@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.AddEditProfileView"
+             xmlns:resources="clr-namespace:newProfileBook.RESX"
              Title="{Binding Title}"
               Style="{StaticResource PageStyle}"
              >
@@ -33,12 +34,12 @@
                    Margin="50,30,50,0"
                    Style="{StaticResource EntryStyle}"
                    Text="{Binding Nickname}"/>
-            <Entry x:Name="txtName"
+        <Entry x:Name="txtName"
                    Placeholder="Name"
                    Margin="50,10,50,0"
                    Style="{StaticResource EntryStyle}"
                    Text="{Binding Name}"/>
-            <Entry x:Name="txtDiscription"
+        <Entry x:Name="txtDiscription"
                    Placeholder="Description"
                    VerticalOptions="Center"
                    Margin="50,10,50,0"

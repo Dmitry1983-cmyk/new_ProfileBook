@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Windows.Input;
 using Xamarin.Forms;
+using newProfileBook.RESX;
 
 namespace newProfileBook
 {
@@ -40,31 +41,31 @@ namespace newProfileBook
             switch (_authenticationService.Validate(Login, Password, Confirm))
             {
                 case Validator.LoginIsTaken:
-                    await App.Current.MainPage.DisplayAlert(null, "User Exist. Try Again", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["LoginIsTaken"], "OK");
                     break;
                 case Validator.LoginIsTooLong:
-                    await App.Current.MainPage.DisplayAlert(null, "Login Is Too Long", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["LoginIsTooLong"], "OK");
                     break;
                 case Validator.LoginIsTooShort:
-                    await App.Current.MainPage.DisplayAlert(null, "Login Is Too Short", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["LoginIsTooShort"], "OK");
                     break;
                 case Validator.LoginStartsWithNumber:
-                    await App.Current.MainPage.DisplayAlert(null, "Login Starts With Number", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["LoginIsTooShort"], "OK");
                     break;
                 case Validator.PasswordIsTooLong:
-                    await App.Current.MainPage.DisplayAlert(null, "Password Is Too Long", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["PasswordIsTooLong"], "OK");
                     break;
                 case Validator.PasswordIsTooShort:
-                    await App.Current.MainPage.DisplayAlert(null, "Password Is Too Short", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["PasswordIsTooShort"], "OK");
                     break;
                 case Validator.PasswordIsWeak:
-                    await App.Current.MainPage.DisplayAlert(null, "Password must contains at least one uppercase letter, one lowercase letter and one number", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["PasswordIsWeak"], "OK");
                     break;
                 case Validator.PasswordsAreNotEqual:
-                    await App.Current.MainPage.DisplayAlert(null, "Passwords Are Not Equal", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["PasswordsAreNotEqual"], "OK");
                     break;
                 case Validator.Success:
-                    await App.Current.MainPage.DisplayAlert(null, "Register Succesfully", "OK");
+                    await App.Current.MainPage.DisplayAlert(null, Resources["Register Succesfully"], "OK");
                     RegistrationSuccess();
                     break;
             }

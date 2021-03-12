@@ -3,12 +3,12 @@ using newProfileBook.Model;
 using Prism.Navigation;
 using newProfileBook.Services.Settings;
 using Acr.UserDialogs;
+using System.Collections.Generic;
 
 namespace newProfileBook.ViewModel
 {
     class SettingsPageViewModel : ViewModelBase
     {
-        private IUserDialogs _userDialogs;
         private bool _sortName;
         private bool _sortNickname;
         private bool _sortDate;
@@ -74,17 +74,29 @@ namespace newProfileBook.ViewModel
             }
         }
 
+        private string _selectedLanguage;
+        public string CheckLanguageEngRus
+        {
+            get { return _selectedLanguage; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value)) { _selectedLanguage = value; }
+                _settingsUsers.Language = CheckLanguageEngRus;
+            }
+        }
+        public List<string> Languages { get; set; }
+
         #endregion
 
 
         #region----ctor
 
 
-        public SettingsPageViewModel(IUserDialogs userDialogs,
-            ISettingsUsers settingsUsers, INavigationService navigationService) : base(navigationService, settingsUsers)
+        public SettingsPageViewModel(ISettingsUsers settingsUsers, 
+            INavigationService navigationService) : base(navigationService, settingsUsers)
         {
-            Title = "Setting Page";
-            _userDialogs = userDialogs;
+            //Languages = new List<string>(System.Enum.GetNames(typeof(Languages)));
+            //CheckLanguageEngRus = _settingsUsers.Language;
         }
 
 
