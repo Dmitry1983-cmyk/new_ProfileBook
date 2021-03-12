@@ -4,6 +4,7 @@
              x:Class="newProfileBook.View.AddEditProfileView"
              xmlns:resources="clr-namespace:newProfileBook.RESX"
              Title="{Binding Title}"
+             
               Style="{StaticResource PageStyle}"
              >
     

@@ -44,10 +44,10 @@ namespace newProfileBook.Services.Authentitication
             Validator valid;
             if (Authenticate(login)) { valid = Validator.LoginIsTaken; }
             else if (login.Length > 16) { valid = Validator.LoginIsTooLong; }
-            else if (login.Length < 4) { valid = Validator.LoginIsTooShort; }
+            else if (login.Length==0 || login.Length < 4) { valid = Validator.LoginIsTooShort; }
             else if (char.IsDigit(login[0])) { valid = Validator.LoginStartsWithNumber; }
             else if (password.Length > 16) { valid = Validator.PasswordIsTooLong; }
-            else if (password.Length < 8) { valid = Validator.PasswordIsTooShort; }
+            else if (password.Length==0 || password.Length < 8) { valid = Validator.PasswordIsTooShort; }
             else if (!RegexFunc(password)) { valid = Validator.PasswordIsWeak; }
             else if (!password.Equals(confirmPassword)) { valid = Validator.PasswordsAreNotEqual; }
             else { valid = Validator.Success; }

@@ -13,6 +13,8 @@ using newProfileBook.Model;
 using newProfileBook.Services;
 using newProfileBook.ViewModel;
 using newProfileBook.Services.Settings;
+using Rg.Plugins.Popup.Services;
+using newProfileBook.PopUpsView;
 
 namespace newProfileBook
 {
@@ -94,8 +96,14 @@ namespace newProfileBook
         {
             ProfileList = new ObservableCollection<Profile>(_profileService.SortProfiles());
         }
+
+
+        public ICommand ProfileSelected => new Command<Profile>(OnProfileSelectedCommandAsync);
+        private async void OnProfileSelectedCommandAsync(Profile profile)
+        {
+            await PopupNavigation.Instance.PushAsync(new ListPopUpView(profile.ImgPath));
+        }
         #endregion
 
     }
 }
-

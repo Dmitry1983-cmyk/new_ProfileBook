@@ -13,6 +13,7 @@ using Prism.Commands;
 using newProfileBook.Model;
 using newProfileBook.Services.Settings;
 using newProfileBook.Services;
+using newProfileBook.RESX;
 
 namespace newProfileBook.ViewModel
 {
@@ -126,7 +127,7 @@ namespace newProfileBook.ViewModel
                 }
                 else
                 {
-                    await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
+                    await _userDialogs.ActionSheetAsync(null, AppResources.LoginIsTooLong, "Ok");
                 }
             }
             else
@@ -153,7 +154,7 @@ namespace newProfileBook.ViewModel
                 }
                 else
                 {
-                    await _userDialogs.ActionSheetAsync(null, "fields cannot be empty", "Ok");
+                    await _userDialogs.ActionSheetAsync(null, AppResources.LoginIsTooLong, "Ok");
                 }
             }
 

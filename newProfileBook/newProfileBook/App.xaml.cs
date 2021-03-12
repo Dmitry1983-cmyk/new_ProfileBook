@@ -37,6 +37,7 @@ namespace newProfileBook
             else
             {
                 NavigationService.NavigateAsync("NavigationPage/MainListPageView");
+                Application.Current.UserAppTheme = (OSAppTheme)settingsUsers.Theme;
             }
 
         }

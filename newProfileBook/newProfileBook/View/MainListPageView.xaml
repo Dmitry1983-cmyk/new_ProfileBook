@@ -61,7 +61,7 @@
                                            WidthRequest="100" 
                                            Margin="30" BackgroundColor="AliceBlue">
                                         <Image.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding .}" 
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.ProfileSelected ,Source={x:Reference Name=MyListView}}" 
                                                           CommandParameter="{Binding .}"/>
                                         </Image.GestureRecognizers>
                                     </Image>

@@ -178,6 +178,15 @@ namespace newProfileBook.RESX {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password must contains at least one uppercase letter, one lowercase letter and one number.
+        /// </summary>
+        public static string LoginStartsWithNumber {
+            get {
+                return ResourceManager.GetString("LoginStartsWithNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main List Page.
         /// </summary>
         public static string MainListPage {
@@ -219,6 +228,42 @@ namespace newProfileBook.RESX {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Is Too Long.
+        /// </summary>
+        public static string PasswordIsTooLong {
+            get {
+                return ResourceManager.GetString("PasswordIsTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Is Too Short.
+        /// </summary>
+        public static string PasswordIsTooShort {
+            get {
+                return ResourceManager.GetString("PasswordIsTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must contains at least one uppercase letter, one lowercase letter and one number.
+        /// </summary>
+        public static string PasswordIsWeak {
+            get {
+                return ResourceManager.GetString("PasswordIsWeak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwords Are Not Equal.
+        /// </summary>
+        public static string PasswordsAreNotEqual {
+            get {
+                return ResourceManager.GetString("PasswordsAreNotEqual", resourceCulture);
             }
         }
         
@@ -291,6 +336,15 @@ namespace newProfileBook.RESX {
         public static string SortProfiles {
             get {
                 return ResourceManager.GetString("SortProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register Success.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

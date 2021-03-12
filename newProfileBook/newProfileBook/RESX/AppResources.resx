@@ -156,6 +156,9 @@
   <data name="LoginIsTooShort" xml:space="preserve">
     <value>Login Is Too Short</value>
   </data>
+  <data name="LoginStartsWithNumber" xml:space="preserve">
+    <value>Password must contains at least one uppercase letter, one lowercase letter and one number</value>
+  </data>
   <data name="MainListPage" xml:space="preserve">
     <value>Main List Page</value>
   </data>
@@ -170,6 +173,18 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="PasswordIsTooLong" xml:space="preserve">
+    <value>Password Is Too Long</value>
+  </data>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Password Is Too Short</value>
+  </data>
+  <data name="PasswordIsWeak" xml:space="preserve">
+    <value>Password must contains at least one uppercase letter, one lowercase letter and one number</value>
+  </data>
+  <data name="PasswordsAreNotEqual" xml:space="preserve">
+    <value>Passwords Are Not Equal</value>
   </data>
   <data name="register" xml:space="preserve">
     <value>Register</value>
@@ -194,6 +209,9 @@
   </data>
   <data name="SortProfiles" xml:space="preserve">
     <value>Sort Profiles</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Register Success</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Change Theme</value>
