@@ -3,21 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.MainPage"
              xmlns:resources="clr-namespace:newProfileBook.RESX"
-             Title="{Binding Title}"
+             Title="{Binding Resources[MainPage]}"
              Style="{StaticResource PageStyle}"
              >
 
     <StackLayout >
         <Entry 
             x:Name="txtLogin" 
-            Placeholder="{x:Static resources:AppResources.Login}"
+            Placeholder="{Binding Resources[Login]}"
             MaxLength="16"
             Margin="80,200,80,0"
             Style="{StaticResource EntryStyle}"
             Text="{Binding Login}"/>
         <Entry
             x:Name="txtPassword"
-            Placeholder="{x:Static resources:AppResources.Password}"
+            Placeholder="{Binding Resources[Password]}"
             MaxLength="16"
             Margin="80,0,80,0"
             IsPassword="True"
@@ -26,7 +26,7 @@
             />
         <Button
             x:Name="btnLogIn"
-            Text="{x:Static resources:AppResources.Login}"
+            Text="{Binding Resources[Login]}"
             HorizontalOptions="Center"
             VerticalOptions="Center"
             WidthRequest="250"
@@ -40,7 +40,7 @@
             >
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{x:Static resources:AppResources.register}">
+                    <Span Text="{Binding Resources[register]}">
                         <Span.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OnTapSignUpPage}"/>
                         </Span.GestureRecognizers>

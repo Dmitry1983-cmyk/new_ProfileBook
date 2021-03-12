@@ -127,7 +127,7 @@ namespace newProfileBook.ViewModel
                 }
                 else
                 {
-                    await _userDialogs.ActionSheetAsync(null, AppResources.LoginIsTooLong, "Ok");
+                    await _userDialogs.ActionSheetAsync(null, Resources["LoginIsTooLong"], "Ok");
                 }
             }
             else
@@ -154,7 +154,7 @@ namespace newProfileBook.ViewModel
                 }
                 else
                 {
-                    await _userDialogs.ActionSheetAsync(null, AppResources.LoginIsTooLong, "Ok");
+                    await _userDialogs.ActionSheetAsync(null, Resources["LoginIsTooShort"], "Ok");
                 }
             }
 
@@ -169,8 +169,8 @@ namespace newProfileBook.ViewModel
             ActionSheetConfig config = new ActionSheetConfig();
 
             List<ActionSheetOption> Options = new List<ActionSheetOption>();
-            Options.Add(new ActionSheetOption("Gallery", () => FromGalleryAsync(), "ic_collections_black.png"));
-            Options.Add(new ActionSheetOption("Camera", () => FromCameraAsync(), "ic_camera_alt_black.png"));
+            Options.Add(new ActionSheetOption(Resources["Gallery"], () => FromGalleryAsync(), "ic_collections_black.png"));
+            Options.Add(new ActionSheetOption(Resources["Camera"], () => FromCameraAsync(), "ic_camera_alt_black.png"));
             ActionSheetOption cancel = new ActionSheetOption("Cancel", null, null);
 
             config.Options = Options;

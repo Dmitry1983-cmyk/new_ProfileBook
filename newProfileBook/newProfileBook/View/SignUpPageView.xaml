@@ -3,21 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.RegisterPageView"
              xmlns:resources="clr-namespace:newProfileBook.RESX"
-             Title="{Binding Title}"
+             Title="{Binding Resources[SigUpPage]}"
              Style="{StaticResource PageStyle}"
              >
     <ContentPage.Content>
         <StackLayout>
             <Entry
                 x:Name="txtLogin"
-                Placeholder="{x:Static resources:AppResources.Login}"
+                Placeholder="{Binding Resources[Login]}"
                 Margin="80,200,80,0"
                 Style="{StaticResource EntryStyle}"
                 Text="{Binding Login}"
                 />
             <Entry 
                 x:Name="txtPassword"
-                Placeholder="{x:Static resources:AppResources.Password}"
+                Placeholder="{Binding Resources[Password]}"
                 IsPassword="True"
                 Margin="80,0,80,0"
                 Style="{StaticResource EntryStyle}"
@@ -25,7 +25,7 @@
                 />
             <Entry 
                 x:Name="txtConfirm"
-                Placeholder="{x:Static resources:AppResources.Confirm}"
+                Placeholder="{Binding Resources[Confirm]}"
                 IsPassword="True"
                 Margin="80,0,80,0"
                 Style="{StaticResource EntryStyle}"
@@ -33,7 +33,7 @@
                 />
             <Button
                 x:Name="btnRegister"
-                Text="{x:Static resources:AppResources.register}"
+                Text="{Binding Resources[register]}"
                 Margin="80,80,80,80"
                 Style="{StaticResource ButtonStyle}"
                 Command="{Binding OnTapRegisterUser}"

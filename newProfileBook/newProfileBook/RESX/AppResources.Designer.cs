@@ -106,6 +106,15 @@ namespace newProfileBook.RESX {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Profile.
+        /// </summary>
+        public static string DeleteProfile {
+            get {
+                return ResourceManager.GetString("DeleteProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -120,6 +129,15 @@ namespace newProfileBook.RESX {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Login or Password.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -354,6 +372,15 @@ namespace newProfileBook.RESX {
         public static string Theme {
             get {
                 return ResourceManager.GetString("Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you want to delete Profile  .
+        /// </summary>
+        public static string wantToDelete {
+            get {
+                return ResourceManager.GetString("wantToDelete", resourceCulture);
             }
         }
     }

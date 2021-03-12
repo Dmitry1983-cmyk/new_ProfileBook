@@ -132,11 +132,17 @@
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
+  <data name="DeleteProfile" xml:space="preserve">
+    <value>Удаление Профиля</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка в поле Логин или Пароль</value>
   </data>
   <data name="Gallery" xml:space="preserve">
     <value>Галерея</value>
@@ -146,6 +152,15 @@
   </data>
   <data name="Login" xml:space="preserve">
     <value>Логин</value>
+  </data>
+  <data name="LoginIsTaken" xml:space="preserve">
+    <value>Такой пользователь уже зарегистрирован</value>
+  </data>
+  <data name="LoginIsTooLong" xml:space="preserve">
+    <value>Логин слишком длинный</value>
+  </data>
+  <data name="LoginIsTooShort" xml:space="preserve">
+    <value>Логин слишком короткий</value>
   </data>
   <data name="LoginStartsWithNumber" xml:space="preserve">
     <value>Пароль должен иметь хотя бы одну цифру</value>
@@ -206,5 +221,8 @@
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Изменить Тему</value>
+  </data>
+  <data name="wantToDelete" xml:space="preserve">
+    <value>Желаете удалить профиль  </value>
   </data>
 </root>

@@ -17,7 +17,6 @@ namespace newProfileBook.ViewModel
         private bool _sortDate;
 
         private bool _chekTheme;
-        private bool _chekLang;
 
         #region--prop
 

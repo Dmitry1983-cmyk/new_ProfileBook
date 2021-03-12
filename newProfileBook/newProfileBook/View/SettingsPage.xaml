@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.SettingsPage"
              xmlns:resources="clr-namespace:newProfileBook.RESX"
-             Title="{Binding Title}"
+             Title="{Binding Resources[SettingsPage]}"
              Style="{StaticResource PageStyle}"
              >
 
@@ -31,7 +31,7 @@
 
             <Label
                 Grid.Row="0"
-                Text="{x:Static resources:AppResources.SortProfiles}"
+                Text="{Binding Resources[SortProfiles]}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Style="{StaticResource LabelStyle}"/>
@@ -43,7 +43,7 @@
 
             <Label 
                 Grid.Row="1"
-                Text="{x:Static resources:AppResources.SortbyName}"
+                Text="{Binding Resources[SortbyName]}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
@@ -55,7 +55,7 @@
                 IsChecked="{Binding SortByNickName}"/>
             <Label 
                 Grid.Row="2"
-                Text="{x:Static resources:AppResources.SortbyNickname}"
+                Text="{Binding Resources[SortbyNickname]}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
@@ -69,14 +69,14 @@
             <Label 
                 
                 Grid.Row="3"
-                Text="{x:Static resources:AppResources.SortbyDate}"
+                Text="{Binding Resources[SortbyDate]}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
 
             <Label 
                 Grid.Row="4"
-                Text="{x:Static resources:AppResources.Theme}"
+                Text="{Binding Resources[Theme]}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Style="{StaticResource LabelStyle}"/>
@@ -86,14 +86,14 @@
                 IsChecked="{Binding CheckTemeDarkLight}"/>
             <Label 
                 Grid.Row="5"
-                Text="{x:Static resources:AppResources.DayNightTheme}"
+                Text="{Binding Resources[DayNightTheme]}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
 
             <Label 
                 Grid.Row="6"
-                Text="{x:Static resources:AppResources.Language}"
+                Text="{Binding Resources[Language]}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Style="{StaticResource LabelStyle}"/>
@@ -101,13 +101,13 @@
             <Picker
                 Grid.Row="7"
                 Margin="20,0,0,0"
-                Title="{x:Static resources:AppResources.Language}"
+                Title="{Binding Resources[Language]}"
                 ItemsSource="{Binding Languages}"
                 SelectedItem="{Binding CheckLanguageEngRus}"/>
             
             <Label 
                 Grid.Row="7"
-                Text="{x:Static resources:AppResources.RuEng}"
+                Text="{Binding Resources[RuEng]}"
                 VerticalOptions="Center"
                 HorizontalOptions="End"
                 Style="{StaticResource LabelStyle}"/>

@@ -46,14 +46,14 @@ namespace newProfileBook
         public ICommand OnTapLogin => new Command(ExecuteNavigateCommand_MainList);
         async private void ExecuteNavigateCommand_MainList()
         {
-            var chek = _authorizationService.Authorizate(Login, Password);//qwerty Q1qqqqqq
+            var chek = _authorizationService.Authorizate(Login, Password);
             if (chek ==1)
             {
                 await _navigationService.NavigateAsync(nameof(MainListPageView));
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(null,"Error Login or Password","Ok");
+                await Application.Current.MainPage.DisplayAlert(null, Resources["Error"], "Ok");
                 Password = string.Empty;
                 RaisePropertyChanged($"{nameof(Password)}");
             }

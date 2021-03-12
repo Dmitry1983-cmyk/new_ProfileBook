@@ -21,7 +21,7 @@ namespace newProfileBook
     class MainListPageViewModel : ViewModelBase
     {
         private readonly IProfileService _profileService;
-
+        private readonly IUserDialogs _userDialogs;
         private ObservableCollection<Profile> _profileList;
 
         #region---property
@@ -36,11 +36,12 @@ namespace newProfileBook
 
         #region --ctor
         public MainListPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers,
-            IProfileService profileService) : base(navigationService, settingsUsers)
+            IProfileService profileService, IUserDialogs userDialogs) : base(navigationService, settingsUsers)
         {
             Title = "Main List Page";
             _settingsUsers = settingsUsers;
             _profileService = profileService;
+            _userDialogs = userDialogs;
             Print();
         }
 
@@ -83,8 +84,8 @@ namespace newProfileBook
 
         public ICommand RemoveCommand => new Command<Profile>(OnRemoveTappedCommandAsync);
         private async void OnRemoveTappedCommandAsync(Profile profile)
-        {
-            var query = await App.Current.MainPage.DisplayAlert("Delete Profile", "Are you want to delete " + profile.Nickname + " ?", "Ok", "Cancel");
+        {//App.Current.MainPage.DisplayAlert("Delete Profile","Are you wish to delete "+profile.Nickname + " ?","Ok", "Cancel");
+            var query = await App.Current.MainPage.DisplayAlert(Resources["DeleteProfile"], Resources["wantToDelete"]+profile.Nickname + " ?","Ok", "Cancel");
             if (query)
             {
                 _profileService.DeleteProfile(profile.Id);

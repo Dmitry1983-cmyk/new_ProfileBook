@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.MainListPageView"
              xmlns:resources="clr-namespace:newProfileBook.RESX"
-             Title="{Binding Title}"
+             Title="{Binding Resources[MainListPage]}"
              Style="{StaticResource PageStyle}"
              >
 
@@ -39,12 +39,12 @@
 
                             <ViewCell.ContextActions>
 
-                                <MenuItem Text="{x:Static resources:AppResources.Edit}"
+                                <MenuItem Text="Edit"
                                           Command="{Binding  Path=BindingContext.EditCommand ,Source={x:Reference Name=MyListView} }" 
                                 CommandParameter="{Binding .}"
                                           IsDestructive="True"/>
 
-                                <MenuItem Text="{x:Static resources:AppResources.Delete}"
+                                <MenuItem Text="Delete"
                                 Command="{Binding  Path=BindingContext.RemoveCommand ,Source={x:Reference Name=MyListView}}" 
                                           CommandParameter="{Binding .}" 
                                           IsDestructive="True"/>

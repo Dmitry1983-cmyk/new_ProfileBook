@@ -19,7 +19,7 @@ namespace newProfileBook
     public class SignUpPageViewModel : ViewModelBase
     {
         private readonly IAuthenticationService _authenticationService;
-
+        private readonly IUserDialogs _userDialogs;
         public string Login { get; set; }
 
         public string Password { get; set; }
@@ -28,12 +28,13 @@ namespace newProfileBook
 
 
         public SignUpPageViewModel(INavigationService navigationService, ISettingsUsers settingsUsers,
-            IAuthenticationService authenticationService) : base(navigationService, settingsUsers)
+            IAuthenticationService authenticationService, IUserDialogs userDialogs) : base(navigationService, settingsUsers)
         {
             Title = "Sign Up Page";
             _navigationService = navigationService;
             _settingsUsers = settingsUsers;
             _authenticationService = authenticationService;
+            _userDialogs = userDialogs;
         }
         public ICommand OnTapRegisterUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
@@ -41,31 +42,31 @@ namespace newProfileBook
             switch (_authenticationService.Validate(Login, Password, Confirm))
             {
                 case Validator.LoginIsTaken:
-                    await App.Current.MainPage.DisplayAlert(null,AppResources.LoginIsTaken, "OK");
+                    await _userDialogs.AlertAsync(Resources["LoginIsTaken"], null, "OK");
                     break;
                 case Validator.LoginIsTooLong:
-                    await App.Current.MainPage.DisplayAlert(null,AppResources.LoginIsTooLong, "OK");
+                    await _userDialogs.AlertAsync( Resources["LoginIsTooLong"], null, "OK");
                     break;
                 case Validator.LoginIsTooShort:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.LoginIsTooShort, "OK");
+                    await _userDialogs.AlertAsync(Resources["LoginIsTooShort"], null, "OK");
                     break;
                 case Validator.LoginStartsWithNumber:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.LoginStartsWithNumber, "OK");
+                    await _userDialogs.AlertAsync(Resources["LoginStartsWithNumber"], null, "OK");
                     break;
                 case Validator.PasswordIsTooLong:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.PasswordIsTooLong , "OK");
+                    await _userDialogs.AlertAsync(Resources["PasswordIsTooLong"], null, "OK");
                     break;
                 case Validator.PasswordIsTooShort:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.PasswordIsTooShort, "OK");
+                    await _userDialogs.AlertAsync(Resources["PasswordIsTooShort"], null, "OK");
                     break;
                 case Validator.PasswordIsWeak:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.PasswordIsWeak, "OK");
+                    await _userDialogs.AlertAsync(Resources["PasswordIsWeak"], null, "OK");
                     break;
                 case Validator.PasswordsAreNotEqual:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.PasswordsAreNotEqual, "OK");
+                    await _userDialogs.AlertAsync(Resources["PasswordsAreNotEqual"], null, "OK");
                     break;
                 case Validator.Success:
-                    await App.Current.MainPage.DisplayAlert(null, AppResources.Success, "OK");
+                    await _userDialogs.AlertAsync(Resources["Success"], null, "OK");
                     RegistrationSuccess();
                     break;
             }

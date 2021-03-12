@@ -132,11 +132,17 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeleteProfile" xml:space="preserve">
+    <value>Delete Profile</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error Login or Password</value>
   </data>
   <data name="Gallery" xml:space="preserve">
     <value>Gallery</value>
@@ -215,5 +221,8 @@
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Change Theme</value>
+  </data>
+  <data name="wantToDelete" xml:space="preserve">
+    <value>Are you want to delete Profile  </value>
   </data>
 </root>
