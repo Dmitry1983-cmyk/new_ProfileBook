@@ -1,5 +1,5 @@
 ﻿using newProfileBook.Localization;
-using newProfileBook.Model;
+using newProfileBook.RESX;
 using newProfileBook.Services.Settings;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -31,7 +31,7 @@ namespace newProfileBook.ViewModel
         {
             _navigationService = navigationService;
             _settingsUsers = settingsUsers;
-            
+            Resources = new LocalizedResources(typeof(AppResources), _settingsUsers.Language);
         }
 
         public virtual void Initialize(INavigationParameters parameters){}

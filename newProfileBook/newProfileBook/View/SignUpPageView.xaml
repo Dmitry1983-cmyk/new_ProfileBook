@@ -10,14 +10,14 @@
         <StackLayout>
             <Entry
                 x:Name="txtLogin"
-                Placeholder="Login"
+                Placeholder="{x:Static resources:AppResources.Login}"
                 Margin="80,200,80,0"
                 Style="{StaticResource EntryStyle}"
                 Text="{Binding Login}"
                 />
             <Entry 
                 x:Name="txtPassword"
-                Placeholder="Password"
+                Placeholder="{x:Static resources:AppResources.Password}"
                 IsPassword="True"
                 Margin="80,0,80,0"
                 Style="{StaticResource EntryStyle}"
@@ -25,7 +25,7 @@
                 />
             <Entry 
                 x:Name="txtConfirm"
-                Placeholder="Confirm"
+                Placeholder="{x:Static resources:AppResources.Confirm}"
                 IsPassword="True"
                 Margin="80,0,80,0"
                 Style="{StaticResource EntryStyle}"
@@ -33,7 +33,7 @@
                 />
             <Button
                 x:Name="btnRegister"
-                Text="register"
+                Text="{x:Static resources:AppResources.register}"
                 Margin="80,80,80,80"
                 Style="{StaticResource ButtonStyle}"
                 Command="{Binding OnTapRegisterUser}"

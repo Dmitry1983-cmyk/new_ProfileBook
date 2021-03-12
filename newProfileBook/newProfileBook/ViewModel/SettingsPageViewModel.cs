@@ -4,6 +4,9 @@ using Prism.Navigation;
 using newProfileBook.Services.Settings;
 using Acr.UserDialogs;
 using System.Collections.Generic;
+using newProfileBook.RESX;
+using newProfileBook.Localization;
+using System.Globalization;
 
 namespace newProfileBook.ViewModel
 {
@@ -14,7 +17,7 @@ namespace newProfileBook.ViewModel
         private bool _sortDate;
 
         private bool _chekTheme;
-
+        private bool _chekLang;
 
         #region--prop
 
@@ -77,10 +80,14 @@ namespace newProfileBook.ViewModel
         private string _selectedLanguage;
         public string CheckLanguageEngRus
         {
-            get { return _selectedLanguage; }
+            get
+            { return _selectedLanguage; }
             set
             {
-                if (!string.IsNullOrEmpty(value)) { _selectedLanguage = value; }
+                if (!string.IsNullOrEmpty(value))
+                {
+                    _selectedLanguage = value;
+                }
                 _settingsUsers.Language = CheckLanguageEngRus;
             }
         }
@@ -95,8 +102,8 @@ namespace newProfileBook.ViewModel
         public SettingsPageViewModel(ISettingsUsers settingsUsers, 
             INavigationService navigationService) : base(navigationService, settingsUsers)
         {
-            //Languages = new List<string>(System.Enum.GetNames(typeof(Languages)));
-            //CheckLanguageEngRus = _settingsUsers.Language;
+            Languages = new List<string>(System.Enum.GetNames(typeof(Languages)));
+            CheckLanguageEngRus = _settingsUsers.Language;
         }
 
 

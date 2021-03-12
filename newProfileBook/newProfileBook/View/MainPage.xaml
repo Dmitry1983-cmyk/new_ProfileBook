@@ -10,14 +10,14 @@
     <StackLayout >
         <Entry 
             x:Name="txtLogin" 
-            Placeholder="Login"
+            Placeholder="{x:Static resources:AppResources.Login}"
             MaxLength="16"
             Margin="80,200,80,0"
             Style="{StaticResource EntryStyle}"
             Text="{Binding Login}"/>
         <Entry
             x:Name="txtPassword"
-            Placeholder="Password"
+            Placeholder="{x:Static resources:AppResources.Password}"
             MaxLength="16"
             Margin="80,0,80,0"
             IsPassword="True"
@@ -26,7 +26,7 @@
             />
         <Button
             x:Name="btnLogIn"
-            Text="Login"
+            Text="{x:Static resources:AppResources.Login}"
             HorizontalOptions="Center"
             VerticalOptions="Center"
             WidthRequest="250"

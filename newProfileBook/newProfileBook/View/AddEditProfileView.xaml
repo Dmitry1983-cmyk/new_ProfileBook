@@ -29,19 +29,19 @@
             </Image>
             
             <Entry x:Name="txtNickname"
-                   Placeholder="Nickname"
+                   Placeholder="{x:Static resources:AppResources.Nickname}"
                    VerticalOptions="Center"
                    FontAttributes="Bold"
                    Margin="50,30,50,0"
                    Style="{StaticResource EntryStyle}"
                    Text="{Binding Nickname}"/>
         <Entry x:Name="txtName"
-                   Placeholder="Name"
+                   Placeholder="{x:Static resources:AppResources.Name}"
                    Margin="50,10,50,0"
                    Style="{StaticResource EntryStyle}"
                    Text="{Binding Name}"/>
         <Entry x:Name="txtDiscription"
-                   Placeholder="Description"
+                   Placeholder="{x:Static resources:AppResources.Description}"
                    VerticalOptions="Center"
                    Margin="50,10,50,0"
                    HeightRequest="150"

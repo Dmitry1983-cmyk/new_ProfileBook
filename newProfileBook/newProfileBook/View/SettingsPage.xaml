@@ -31,7 +31,7 @@
 
             <Label
                 Grid.Row="0"
-                Text="SortProfiles"
+                Text="{x:Static resources:AppResources.SortProfiles}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Style="{StaticResource LabelStyle}"/>
@@ -43,7 +43,7 @@
 
             <Label 
                 Grid.Row="1"
-                Text="SortbyName"
+                Text="{x:Static resources:AppResources.SortbyName}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
@@ -55,7 +55,7 @@
                 IsChecked="{Binding SortByNickName}"/>
             <Label 
                 Grid.Row="2"
-                Text="SortbyNickname"
+                Text="{x:Static resources:AppResources.SortbyNickname}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
@@ -69,14 +69,14 @@
             <Label 
                 
                 Grid.Row="3"
-                Text="SortbyDate"
+                Text="{x:Static resources:AppResources.SortbyDate}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
 
             <Label 
                 Grid.Row="4"
-                Text="Theme"
+                Text="{x:Static resources:AppResources.Theme}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Style="{StaticResource LabelStyle}"/>
@@ -86,28 +86,31 @@
                 IsChecked="{Binding CheckTemeDarkLight}"/>
             <Label 
                 Grid.Row="5"
-                Text="DayNightTheme"
+                Text="{x:Static resources:AppResources.DayNightTheme}"
                 VerticalOptions="Center"
                 Margin="70,0,0,0"
                 Style="{StaticResource LabelStyle}"/>
 
             <Label 
                 Grid.Row="6"
-                Text="Language"
+                Text="{x:Static resources:AppResources.Language}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Style="{StaticResource LabelStyle}"/>
-            <CheckBox
+
+            <Picker
                 Grid.Row="7"
                 Margin="20,0,0,0"
-                IsChecked="{Binding CheckLanguageEngRus}"/>
+                Title="{x:Static resources:AppResources.Language}"
+                ItemsSource="{Binding Languages}"
+                SelectedItem="{Binding CheckLanguageEngRus}"/>
+            
             <Label 
                 Grid.Row="7"
-                Text="RuEng"
+                Text="{x:Static resources:AppResources.RuEng}"
                 VerticalOptions="Center"
-                Margin="70,0,0,0"
+                HorizontalOptions="End"
                 Style="{StaticResource LabelStyle}"/>
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>

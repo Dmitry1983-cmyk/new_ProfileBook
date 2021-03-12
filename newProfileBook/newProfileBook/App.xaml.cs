@@ -21,7 +21,7 @@ namespace newProfileBook
     public partial class App 
     {
         private ISettingsUsers settingsUsers;
-        public static string CurrentLanguage = "en";
+        //public static string CurrentLanguage = "en";
         public App():this(null) { }
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
